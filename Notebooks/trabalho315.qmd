@@ -228,10 +228,9 @@ DadosAlunos = pd.DataFrame({
 
 ```{=html}
 <p style="font-size:0.6em; color:#555;">
-A inspeção inicial é importante para entender a estrutura e a qualidade dos dados, identificando inconsistências, valores ausentes ou outliers. Para ilustrar os conceitos, usaremos o dataset StarWars do pacote dplyr (R).
+A inspeção inicial é importante para entender a estrutura e a qualidade dos dados, identificando inconsistências, valores ausentes ou outliers. Para ilustrar os conceitos, usaremos o dataset electric_vehicles_spec_2025 do pacote dplyr (R)(?).
 </p>
 ```
-
 #### Visualização das primeiras e últimas linhas
 
 ```{julia}
@@ -246,39 +245,23 @@ dataset_eletric_cars = CSV.read("dataset/electric_vehicles_spec_2025.csv", DataF
 first(dataset_eletric_cars, 6)
 ```
 
-```{julia}
-#| echo: false
-first(dataset_eletric_cars, 6)
-```
-
-```{=html}
-<p style="font-size:0.6em; color:#555;">
-Da mesma forma, utilizamos <code>last(dataset_eletric_cars, 6)</code> para visualizar as últimas 6 linhas.
-</p>
-```
-
-------------------------------------------------------------------------
-
-##### R
-
 ```{r}
 #| echo: true
 #| eval: false
 head(dataset_eletric_cars) # primeiras 6 linhas
-tail(dataset_eletric_cars) # últimas 6 linhas
 ```
-
-##### Python - Pandas
 
 ```{python}
 #| echo: true
 #| eval: false
 import pandas as pd
-
 print(dataset_eletric_cars.head())
-print(dataset_eletric_cars.tail())
 ```
 
+```{julia}
+#| echo: false
+first(dataset_eletric_cars, 6)
+```
 ------------------------------------------------------------------------
 
 #### Estrutura do DataSet
@@ -405,7 +388,7 @@ map(col -> count(ismissing, col), eachcol(dataset_eletric_cars))
 
 ------------------------------------------------------------------------
 
-Transformando em um DataFrame:
+###### Transformando em um DataFrame:
 
 ```{julia}
 #| echo: true
