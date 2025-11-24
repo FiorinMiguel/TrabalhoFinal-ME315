@@ -1,20 +1,65 @@
-#  Manipulação de Dados com Julia
+# 📊 Manipulação de Dados em Julia — Checklist
 
-Este projeto explora as principais etapas do processo de **manipulação e transformação de dados** utilizando a linguagem **Julia**.  
-A ideia é compreender desde a **importância dos dados limpos** até **quando (e quando não) utilizar Julia** para tarefas desse tipo.
+## 📁 Estrutura do Conteúdo
+
+### **1. Contextualização**
+- [ ] O que é manipulação de dados  
+- [ ] Por que utilizar Julia para análise  
+- [ ] Principais pacotes utilizados
 
 ---
 
-##  Estrutura do Projeto
+### **2. Inspeção Inicial**
+- [ ] Carregamento de dados com `CSV.jl`  
+- [ ] Visualização inicial (`first`, `describe`, `names`)  
+- [ ] Checagem de tipos (`schema`, `eltype`)
 
-| Etapa | Descrição | Status |
-|:------|:-----------|:-------|
-| **1️⃣ Contexto: Importância da manipulação de dados** | Por que a limpeza e organização de dados é essencial para análises confiáveis. | ✅ |
-| **2️⃣ Tipos de dados e estruturas** | Revisão de vetores, matrizes, DataFrames e outros tipos fundamentais. | ✅ |
-| **3️⃣ Inspeção inicial e exploração** | Visualizar, descrever e compreender a estrutura dos dados. | ✅ |
-| **4️⃣ Limpeza de dados** | Tratamento de valores ausentes, duplicados e inconsistências. | ☐ |
-| **5️⃣ Transformações básicas** | Aplicação de `select`, `filter`, `mutate`, entre outras operações. | ☐ |
-| **6️⃣ Operações agregadas** | Agrupamentos, sumarizações e estatísticas descritivas. | ☐ |
-| **7️⃣ Quando usar (e quando não usar) Julia** | Reflexão sobre as vantagens e limitações do uso de Julia na manipulação de dados. | ☐ |
+---
 
-> ✅ Para marcar uma seção como concluída, substitua `☐` por `✅`.
+### **3. Estrutura do Dataset**
+- [ ] Dimensões (`size`, `nrow`, `ncol`)  
+- [ ] Tipos de variáveis  
+- [ ] Verificação de valores faltantes (`ismissing`)
+
+---
+
+### **4. Manipulação Básica com DataFrames**
+
+#### **4.1 Criação de DataFrames**
+- [ ] Criação manual  
+- [ ] Criação a partir de CSV
+
+#### **4.2 Seleção e Ordenação**
+- [ ] Selecionar colunas (`select`)  
+- [ ] Selecionar linhas (`subset`)  
+- [ ] Ordenar (`sort`)
+
+#### **4.3 Renomear e Transformar**
+- [ ] Renomear colunas (`rename`)  
+- [ ] Criar novas colunas (`transform`)  
+- [ ] Modificar colunas existentes (`@transform!`)
+
+---
+
+### **5. Filtragem e Limpeza**
+
+#### **5.1 Filtragem Condicional**
+- [ ] Uso de `filter`  
+- [ ] Filtragem com múltiplas condições
+
+#### **5.2 Tratamento de Valores Faltantes**
+- [ ] Remover faltantes (`dropmissing`)  
+- [ ] Substituir (`coalesce`, `passmissing`)
+
+#### **5.3 Outliers**
+- [ ] Detectar outliers (Z-score / IQR)  
+- [ ] Remover outliers (`subset`)
+
+---
+
+### **6. Conclusão**
+- [ ] Resumo das transformações  
+- [ ] Vantagens de Julia  
+- [ ] Possíveis extensões
+
+---
