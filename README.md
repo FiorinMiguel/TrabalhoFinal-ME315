@@ -7,7 +7,10 @@
 - [x] **Contextualização**
 - [x] **Inspeção inicial**
 - [ ] **Estrutura do dataset**
-- [ ] **Criar DataFrame, select, rename, transform**
+- [ ] **Criar DataFrame**
+- [ ] select
+- [ ] rename
+- [ ] transform
 - [ ] **Filtragem**  
   - [ ] Função `filter`  
   - [ ] Filtragem dos `NA`  
