@@ -6,15 +6,15 @@
 - [x] **Índice**
 - [x] **Contextualização**
 - [x] **Inspeção inicial**
-- [ ] **Estrutura do dataset**
+- [x] **Estrutura do dataset**
 - [x] **Criar DataFrame**
-- [ ] select
-- [ ] rename
+- [x] select
+- [x] rename
   (
   Formata o nome das colunas do jeito: nome_formatado
   do csv 'electric_vehicles_spec_2025.csv'
 )
-- [ ] transform
+- [x] transform
 - [x] **Filtragem**  
   - [x] Função `filter`  
   - [x] Filtragem dos `NA`  
