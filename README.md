@@ -4,8 +4,8 @@
 
 ### **1. Contextualização**
 - [x] O que é manipulação de dados  
-- [ ] Por que utilizar Julia para análise  
-- [ ] Principais pacotes utilizados
+- [x] Por que utilizar Julia para análise  
+- [x] Principais pacotes utilizados
 
 ---
 
