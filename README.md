@@ -10,6 +10,10 @@
 - [ ] **Criar DataFrame**
 - [ ] select
 - [ ] rename
+  (
+  Formata o nome das colunas do jeito: nome_formatado
+  do csv 'electric_vehicles_spec_2025.csv'
+)
 - [ ] transform
 - [ ] **Filtragem**  
   - [ ] Função `filter`  
