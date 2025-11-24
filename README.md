@@ -7,7 +7,7 @@
 - [x] **Contextualização**
 - [x] **Inspeção inicial**
 - [ ] **Estrutura do dataset**
-- [ ] **Criar DataFrame**
+- [x] **Criar DataFrame**
 - [ ] select
 - [ ] rename
   (
