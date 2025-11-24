@@ -409,6 +409,381 @@ missing_count = DataFrame(
 
 ------------------------------------------------------------------------
 
+### Rename
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+Nomear variáveis ou colunas seguindo boas práticas é essencial para garantir consistência, clareza e evitar erros no código. Usar nomes padronizados — sem espaços, acentos ou caracteres especiais, com letras minúsculas e “_” entre palavras — torna o trabalho mais organizado, facilita chamadas em funções e assegura compatibilidade entre diferentes linguagens e ferramentas, resultando em um fluxo de trabalho mais simples e robusto.
+</p>
+```
+
+#### Exemplo em Julia:
+
+```{julia}
+#| echo: true
+#| eval: false
+# Exemplo simples: 
+rename!(dataset_eletric_cars, "Brand" => "brand")
+rename!(dataset_eletric_cars, "Model" => "model")
+rename!(dataset_eletric_cars, "Top Speed kmh" => "top_speed_kmh")
+```
+
+------------
+
+##### Pacote dplyr
+
+```{r}
+#| echo: true
+#| eval: false
+library(dplyr)
+dataset_eletric_cars <- dataset_eletric_cars %>%
+  rename(
+    brand = Brand,
+    model = Model,
+    top_speed_kmh = Top.Speed.kmh,
+    battery_capacity_kwh = Battery.capacity.kWh
+  )
+
+```
+
+##### Python - Biblioteca Pandas
+
+```{python}
+#| echo: true
+#| eval: false
+import pandas as pd
+dataset_eletric_cars.columns = [
+    "brand",
+    "model",
+    "top_speed_kmh",
+    "battery_capacity_kwh",
+    ...
+]
+```
+
+----------
+
+### Select
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+A seleção de colunas é fundamental para tornar o código mais claro, eficiente e menos sujeito a erros, permitindo trabalhar apenas com as variáveis necessárias. Mantê-la explícita melhora a transparência e facilita a compreensão do código no futuro.
+</p>
+```
+
+#### Exemplo em Julia:
+
+```{julia}
+#| echo: true
+#| eval: false
+using DataFrames
+
+# Seleção simples de colunas
+df_subset = select(dataset_eletric_cars, [:Brand, :Model, :Battery_capacity_kWh])
+
+# Também é possível selecionar intervalos de colunas:
+df_subset2 = select(dataset_eletric_cars, Between(:Brand, :Top_Speed_kmh))
+
+# Seleção por posição:
+df_subset3 = select(dataset_eletric_cars, 1:3)
+
+# Deselecionar colunas (remover):
+df_subset4 = select(dataset_eletric_cars, Not(["Model", "Brand"]))
+
+
+```
+
+------------
+
+##### Pacote dplyr
+
+```{r}
+#| echo: true
+#| eval: false
+library(dplyr)
+
+# Seleção simples
+df_subset <- dataset_eletric_cars %>%
+  select(Brand, Model, Battery_capacity_kWh)
+
+# Seleção por intervalo de colunas
+df_subset2 <- dataset_eletric_cars %>%
+  select(Brand:Top.Speed.kmh)
+
+# Seleção por padrão de nome
+df_subset3 <- dataset_eletric_cars %>%
+  select(starts_with("Bat"))
+
+# Deselecionar colunas
+df_subset4 <- dataset_eletric_cars %>%
+  select(-Model, -Brand)
+
+```
+
+-------------
+
+##### Python - Biblioteca Pandas
+
+```{python}
+#| echo: true
+#| eval: false
+import pandas as pd
+
+# Seleção simples
+df_subset = dataset_eletric_cars[["Brand", "Model", "Battery_capacity_kWh"]]
+
+# Seleção de intervalo pelo índice
+df_subset2 = dataset_eletric_cars.iloc[:, 0:3]  # primeiras 3 colunas
+
+# Seleção usando padrão de nome
+df_subset3 = dataset_eletric_cars.filter(regex="^Bat")
+
+# Deselecionar colunas
+df_subset4 = dataset_eletric_cars.drop(columns=["Model", "Brand"])
+
+```
+
+------------------
+
+### Transform
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+A função de transformação é fundamental para criar novas variáveis ou modificar valores existentes por meio de cálculos e padronizações, permitindo adicionar ou ajustar colunas de forma sistemática. Seu uso explícito torna o código mais claro e bem documentado, o que é essencial para análises reprodutíveis e projetos com várias etapas.
+</p>
+
+```
+
+#### Exemplo em Julia:
+
+```{julia}
+#| echo: true
+#| eval: false
+using DataFrames
+
+# Criando novas colunas com transform
+df_transformed = transform(
+    dataset_eletric_cars,
+    :Battery_capacity_kWh => (x -> x .* 1000) => :battery_wh,
+    :Top_Speed_kmh => (x -> x ./ 3.6) => :top_speed_ms
+)
+
+# Aplicando múltiplas funções a uma mesma coluna
+df_transformed2 = transform(
+    dataset_eletric_cars,
+    :Battery_capacity_kWh => [mean, std]
+)
+
+```
+
+---------------------
+
+
+##### Pacote dplyr
+
+```{r}
+#| echo: true
+#| eval: false
+library(dplyr)
+
+# Criando novas colunas
+df_transformed <- dataset_eletric_cars %>%
+  mutate(
+    battery_wh = Battery_capacity_kWh * 1000,
+    top_speed_ms = Top.Speed.kmh / 3.6
+  )
+
+# Aplicando múltiplas transformações a uma mesma coluna
+df_transformed2 <- dataset_eletric_cars %>%
+  mutate(
+    battery_mean = mean(Battery_capacity_kWh),
+    battery_sd   = sd(Battery_capacity_kWh)
+  )
+
+```
+
+----------------------------
+
+##### Python - Biblioteca Pandas
+
+```{python}
+#| echo: true
+#| eval: false
+import pandas as pd
+
+# Criando novas colunas
+df_transformed = dataset_eletric_cars.assign(
+    battery_wh=lambda df: df["Battery_capacity_kWh"] * 1000,
+    top_speed_ms=lambda df: df["Top Speed kmh"] / 3.6
+)
+
+# Aplicando múltiplas funções a uma única coluna
+df_transformed2 = dataset_eletric_cars.copy()
+df_transformed2["battery_mean"] = dataset_eletric_cars["Battery_capacity_kWh"].mean()
+df_transformed2["battery_sd"]   = dataset_eletric_cars["Battery_capacity_kWh"].std()
+
+```
+
+------------------------------------
+
+#### Filtragem de Dados: filter()
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+A função filter seleciona elementos de uma coleção que satisfazem uma condição lógica definida pelo usuário.
+Ela é importante porque permite limpar, selecionar e preparar os dados de forma precisa, mantendo apenas as observações relevantes para a análise.
+</p>
+```
+##### Vetores - Sintaxe simples
+```{julia}
+#| echo: true
+#| eval: false
+# filter(função_booleana, coleção)
+# Exemplos com vetores:
+v = [1,3,4,5,7,9,10, missing];
+v_filtrado = filter(x -> !ismissing(x) && x > 5, v)
+#Resultado:
+# v_filtrado = [7,9,10]
+
+marcas = ["Honda", "Mercedes-Benz", "Hyndai", "Jeep", "BMW", "Volkswagen", "Chevrolet"];
+longos = filter(marcas -> length(marcas) > 5, marcas)
+# Resultado: 
+# longos = ["Mercedes-Benz", "Hyundai", "Volkswagen", "Chevrolet"]
+```
+----------------
+
+##### R
+```{r}
+#| echo: true
+#| eval: false
+v <- c(1, 3, 4, 5, 7, 9, 10, NA)
+v_filtrado <- v[!is.na(v) & v > 5]
+
+marcas <- c("Honda", "Mercedes-Benz", "Hyndai", "Jeep", "BMW", "Volkswagen", "Chevrolet")
+longos <- marcas[nchar(marcas) > 5]
+```
+##### Python (Numpy)
+```{python}
+#| echo: true
+#| eval: false
+import numpy as np
+
+v = [1, 3, 4, 5, 7, 9, 10, np.nan]
+v_filtrado = [x for x in v if not np.isnan(x) and x > 5]
+
+marcas = ["Honda", "Mercedes-Benz", "Hyndai", "Jeep", "BMW", "Volkswagen", "Chevrolet"]
+longos = [m for m in marcas if len(m) > 5]
+```
+
+---- 
+
+##### Exemplo no dataset: filtrando SUVs.
+
+```{julia}
+#| echo: true
+#| eval: false
+suv_cars = filter(row -> row.car_body_type == "SUV", dataset_eletric_cars)
+```
+
+```{julia}
+#| echo: false
+suv_cars = filter(row -> row.car_body_type == "SUV", dataset_eletric_cars);
+first(suv_cars, 6)
+```
+
+------
+
+##### R
+```{r}
+#| echo: true
+#| eval: false
+library(dplyr)
+
+suv_cars <- dataset_eletric_cars %>%
+  filter(car_body_type == "SUV")
+```
+
+##### Python
+```{python}
+#| echo: true
+#| eval: false
+suv_cars = dataset_eletric_cars[dataset_eletric_cars["car_body_type"] == "SUV"]
+```
+
+----------
+
+####### Filtrar linhas que NÃO têm missing em uma coluna
+```{julia}
+#| echo: true
+#| eval: false
+cars_limpo = dropmissing(dataset_eletric_cars, :number_of_cells)
+```
+
+####### Filtrar linhas que NÃO têm missing em **nenhuma** coluna
+
+```{julia}
+#| echo: true
+#| eval: false
+cars_sem_missing = dropmissing(dataset_eletric_cars)
+```
+
+####### Substituir valores missing por algum valor (imputação simples)
+
+```{julia}
+#| echo: true
+#| eval: false
+mean_cells = mean(skipmissing(dataset_eletric_cars.number_of_cells))
+dataset_eletric_cars.number_of_cells = coalesce.(dataset_eletric_cars.number_of_cells, mean_cells)
+```
+
+------
+
+##### R
+```{r}
+#| echo: true
+#| eval: false
+library(dplyr)
+
+# Filtrar linhas que NÃO têm missing em uma coluna
+cars_limpo <- dataset_eletric_cars %>%
+  filter(!is.na(number_of_cells))
+
+# Filtrar linhas que NÃO têm missing em nenhuma coluna
+cars_sem_missing <- dataset_eletric_cars %>%
+  filter(if_all(everything(), ~ !is.na(.x)))
+
+# Substituir valores missing por algum valor (imputação simples)
+mean_cells <- mean(dataset_eletric_cars$number_of_cells, na.rm = TRUE)
+
+dataset_eletric_cars <- dataset_eletric_cars %>%
+  mutate(number_of_cells = if_else(is.na(number_of_cells),
+                                   mean_cells,
+                                   number_of_cells))
+
+```
+
+------
+
+##### Python
+```{python}
+#| echo: true
+#| eval: false
+import pandas as pd
+import numpy as np
+
+# Filtrar linhas que NÃO têm missing em uma coluna
+cars_limpo = dataset_eletric_cars.dropna(subset=["number_of_cells"])
+
+# Filtrar linhas que NÃO têm missing em nenhuma coluna
+cars_sem_missing = dataset_eletric_cars.dropna()
+
+# Substituir valores missing por algum valor (imputação simples)
+mean_cells = dataset_eletric_cars["number_of_cells"].mean(skipna=True)
+dataset_eletric_cars["number_of_cells"] = dataset_eletric_cars["number_of_cells"].fillna(mean_cells)
+
+```
+
+------
+
 #### Detecção e tratamento de outliers - Método IQR (regra do boxplot)
 
 ```{=html}
@@ -446,7 +821,6 @@ outlier_rows[:, [:model, :number_of_cells]]
 ```
 
 ------------------------------------------------------------------------
-
 ```{julia}
 #| echo: false
 using Statistics
@@ -479,26 +853,74 @@ Os outliers identificados representam os carros elétricos premium do mercado, c
 </p>
 ```
 
-------------------------------------------------------------------------
-#### Filtragem de Dados: filter()
-##### Vetores 
-```{julia}
+--------------
+
+##### R
+
+```{r}
 #| echo: true
 #| eval: false
-# filter(função_predicado, coleção)
-# Exemplos com vetores:
-v = [1,3,4,5,7,9,10, missing];
-v_filtrado = filter(x -> !ismissing(x) && x > 5, v)
-#Resultado:
-# v_filtrado = [7,9,10]
+library(dplyr)
 
-marcas = ["Honda", "Mercedes-Benz", "Hyndai", "Jeep", "BMW", "Volkswagen", "Chevrolet"];
-longos = filter(marcas -> length(marcas) > 5, marcas)
-# Resultado: 
-# longos = ["Mercedes-Benz", "Hyundai", "Volkswagen", "Chevrolet"]
+# Calcular limites IQR
+cells_data <- dataset_eletric_cars$number_of_cells[!is.na(dataset_eletric_cars$number_of_cells)]
+Q1 <- quantile(cells_data, 0.25)
+Q3 <- quantile(cells_data, 0.75)
+IQR_val <- Q3 - Q1
+
+lower <- Q1 - 1.5 * IQR_val
+upper <- Q3 + 1.5 * IQR_val
+
+# Filtrar outliers
+outlier_rows <- dataset_eletric_cars %>%
+  filter(!is.na(number_of_cells),
+         number_of_cells < lower | number_of_cells > upper)
+
+print(paste("Q1:", Q1))
+print(paste("Q3:", Q3))
+print(paste("IQR:", IQR_val))
+
+# tabela final
+outlier_rows %>%
+  select(model, number_of_cells)
 ```
 
+------
 
+##### Python
+
+```{python}
+#| echo: true
+#| eval: false
+import numpy as np
+import pandas as pd
+
+# Calcular limites IQR
+cells_data = dataset_eletric_cars["number_of_cells"].dropna()
+Q1 = np.quantile(cells_data, 0.25)
+Q3 = np.quantile(cells_data, 0.75)
+IQR_val = Q3 - Q1
+
+lower = Q1 - 1.5 * IQR_val
+upper = Q3 + 1.5 * IQR_val
+
+# Filtrar outliers
+outlier_rows = dataset_eletric_cars[
+    (dataset_eletric_cars["number_of_cells"].notna()) &
+    ((dataset_eletric_cars["number_of_cells"] < lower) |
+     (dataset_eletric_cars["number_of_cells"] > upper))
+]
+
+print("Q1:", Q1)
+print("Q3:", Q3)
+print("IQR:", IQR_val)
+
+# tabela final
+outlier_rows[["model", "number_of_cells"]]
+
+```
+
+---------------
 
 
 
