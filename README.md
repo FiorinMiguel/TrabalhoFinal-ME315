@@ -15,7 +15,7 @@
   do csv 'electric_vehicles_spec_2025.csv'
 )
 - [ ] transform
-- [ ] **Filtragem**  
-  - [ ] Função `filter`  
-  - [ ] Filtragem dos `NA`  
-  - [ ] Detecção e remoção de outliers
+- [x] **Filtragem**  
+  - [x] Função `filter`  
+  - [x] Filtragem dos `NA`  
+  - [x] Detecção e remoção de outliers
