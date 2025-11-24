@@ -11,11 +11,19 @@ format:
 ---
 
 <!-- Slide 1: Capa -->
+::: {.slide style="padding:0;"}
 
-```{=html}
-<img src="pictures/capa.png"
-     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"/>
-```
+<div style="
+  position: absolute;
+  inset: 0;
+  background-image: url('pictures/capa.png');
+  background-size: cover;
+  background-position: center;
+">
+</div>
+
+:::
+
 
 ------------------------------------------------------------------------
 
@@ -51,12 +59,14 @@ Fonte: <a href="https://www.globenewswire.com/news-release/2025/02/06/3022005/0/
 
 ```{=html}
 <h3><strong>Tipos de Dados e Estruturas</strong></h3>
-<p style="font-size:0.7em; color:#555;">
-Entender como os dados são armazenados impacta diretamente a performance e a facilidade de uso.
-</p>
-```
 
-![](pictures/dataStructures.png)
+<img src="pictures/dataStructures.png" style="width:70%; margin-top:15px;"/>
+
+<p style="font-size:0.7em; color:#1C1C1C; line-height:1.4; margin-top:10px;">
+Entender como os dados são armazenados impacta diretamente a performance, o consumo de memória e a facilidade de manipulação. Escolher a estrutura correta é fundamental para um fluxo de trabalho eficiente em Julia.
+</p>
+
+```
 
 ------------------------------------------------------------------------
 
@@ -121,7 +131,7 @@ print(matriz[2,3])
 
 ------------------------------------------------------------------------
 
-#### Valores Ausentes: O missing do Julia
+### Valores Ausentes: O missing do Julia
 
 ```{julia}
 #| echo: true
@@ -160,7 +170,7 @@ np.nanmean(x)           # Ignora os NaNs, retorna 13.33
 
 ------------------------------------------------------------------------
 
-#### Trabalhando com Dados Tabulares: DataFrames
+### Trabalhando com Dados Tabulares: DataFrames
 
 ```{=html}
 <p style="font-size:0.6em; color:#555;">
@@ -181,7 +191,7 @@ Cada coluna de um DataFrame é um vetor com elementos do mesmo tipo, e todas as 
 
 ------------------------------------------------------------------------
 
-#### Exemplo:
+##### Julia
 
 ```{julia}
 #| echo: true
@@ -228,11 +238,13 @@ DadosAlunos = pd.DataFrame({
 
 ```{=html}
 <p style="font-size:0.6em; color:#555;">
-A inspeção inicial é importante para entender a estrutura e a qualidade dos dados, identificando inconsistências, valores ausentes ou outliers. Para ilustrar os conceitos, usaremos o dataset electric_vehicles_spec_2025 do pacote dplyr (R)(?).
+A inspeção inicial é essencial para compreender a estrutura e a qualidade dos dados, permitindo identificar inconsistências, valores ausentes e possíveis outliers. Para exemplificar esses conceitos, utilizaremos o dataset <em>Electric Vehicles Spec 2025</em>, obtido no Kaggle.
 </p>
+
 ```
 #### Visualização das primeiras e últimas linhas
 
+##### Julia
 ```{julia}
 #| include: false
 using CSV, DataFrames
@@ -245,11 +257,21 @@ dataset_eletric_cars = CSV.read("dataset/electric_vehicles_spec_2025.csv", DataF
 first(dataset_eletric_cars, 6)
 ```
 
+```{julia}
+#| echo: false
+first(dataset_eletric_cars, 6)
+```
+
+------------
+
+##### R
 ```{r}
 #| echo: true
 #| eval: false
 head(dataset_eletric_cars) # primeiras 6 linhas
 ```
+
+##### Python
 
 ```{python}
 #| echo: true
@@ -258,21 +280,22 @@ import pandas as pd
 print(dataset_eletric_cars.head())
 ```
 
-```{julia}
-#| echo: false
-first(dataset_eletric_cars, 6)
-```
 ------------------------------------------------------------------------
 
-#### Estrutura do DataSet
+### Estrutura do DataSet
 
 ```{=html}
-<p style="font-size:0.5em; color:#555;">
+<p style="font-size:0.6em; color:#555;">
 Analisar a estrutura do dataset é essencial para compreender o tipo e o papel de cada variável, facilitando a escolha das operações adequadas. Essa etapa também ajuda a identificar inconsistências ou tipos incorretos de dados que podem afetar as análises posteriores.
 </p>
 ```
-
 <h5><code>describe(...)</code></h5>
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+A função <code>describe(...)</code> mostra um resumo das colunas, com estatísticas para numéricas e frequências para categóricas, ajudando a identificar missing values e padrões.
+</p>
+```
 
 ```{julia}
 #| echo: true
@@ -280,15 +303,11 @@ Analisar a estrutura do dataset é essencial para compreender o tipo e o papel d
 describe(dataset_eletric_cars)
 ```
 
+---------------------
+
 ```{julia}
 #| echo: false
 describe(dataset_eletric_cars)
-```
-
-```{=html}
-<p style="font-size:0.5em; color:#555;">
-A função <code>describe(...)</code> mostra um resumo das colunas, com estatísticas para numéricas e frequências para categóricas, ajudando a identificar missing values e padrões.
-</p>
 ```
 
 ------------------------------------------------------------------------
@@ -307,7 +326,7 @@ names(dataset_eletric_cars)
 ```
 
 ```{=html}
-<p style="font-size:0.5em; color:#555;">
+<p style="font-size:0.6em; color:#555;">
 A função <code>names(...)</code> retorna os nomes de todas as colunas do dataset, permitindo entender rapidamente a estrutura dos dados.
 </p>
 ```
@@ -326,12 +345,11 @@ eltype.(eachcol(dataset_eletric_cars))
 #| echo: false
 eltype.(eachcol(dataset_eletric_cars))
 ```
-
-<p style="font-size:0.5em; color:#555;">
-
+```{=html}
+<p style="font-size:0.6em; color:#555;">
 A função <code>eltype.(eachcol(...))</code> mostra o tipo de cada coluna, indicando se são numéricas, categóricas ou outro tipo de dado.
-
 </p>
+```
 
 ------------------------------------------------------------------------
 
@@ -342,7 +360,7 @@ A função <code>eltype.(eachcol(...))</code> mostra o tipo de cada coluna, indi
 #| eval: false
 summary(dataset_eletric_cars) #estatísticas descritivas das colunas
 str(dataset_eletric_cars) # estrutura interna do dataset.
-names(dataset_eletric_cars) 
+names(dataset_eletric_cars) # nomes
 ```
 
 ##### Python - Pandas
@@ -359,65 +377,15 @@ print(dataset_eletric_cars.describe()) # estatísticas descritivas
 
 ------------------------------------------------------------------------
 
-#### **Limpeza de dados**
+<h3><code>Rename</code></h3>
 
 ```{=html}
 <p style="font-size:0.6em; color:#555;">
-A limpeza de dados assegura qualidade e confiabilidade nas análises. Sem ela, os resultados podem ser distorcidos e levar a conclusões incorretas.
+Seguir boas práticas ao nomear variáveis melhora a clareza e reduz erros no código. Adotar um padrão como o <em>snake_case</em> — sem espaços, acentos ou caracteres especiais, usando minúsculas e “_” — garante consistência e compatibilidade entre linguagens, tornando o trabalho mais organizado.
 </p>
 ```
 
-##### **Identificação de valores ausentes em um DataFrame**
-
-###### Vetorização
-
-```{julia}
-#| echo: true
-#| eval: false
-ismissing.(dataset_eletric_cars.model)  # retorna true/false para cada linha
-```
-
-###### Contagem de valores ausentes
-
-```{julia}
-#| echo: true
-#| eval: false
-count(ismissing, dataset_eletric_cars.model) # conta missings de uma coluna
-map(col -> count(ismissing, col), eachcol(dataset_eletric_cars))
-```
-
-------------------------------------------------------------------------
-
-###### Transformando em um DataFrame:
-
-```{julia}
-#| echo: true
-#| eval: false
-missing_count = DataFrame(
-    Coluna = names(dataset_eletric_cars),
-    Missings = map(col -> count(ismissing, col), eachcol(dataset_eletric_cars))
-)
-```
-
-```{julia}
-#| echo: false
-missing_count = DataFrame(
-    Coluna = names(dataset_eletric_cars),
-    Missings = map(col -> count(ismissing, col), eachcol(dataset_eletric_cars))
-)
-```
-
-------------------------------------------------------------------------
-
-### Rename
-
-```{=html}
-<p style="font-size:0.6em; color:#555;">
-Nomear variáveis ou colunas seguindo boas práticas é essencial para garantir consistência, clareza e evitar erros no código. Usar nomes padronizados — sem espaços, acentos ou caracteres especiais, com letras minúsculas e “_” entre palavras — torna o trabalho mais organizado, facilita chamadas em funções e assegura compatibilidade entre diferentes linguagens e ferramentas, resultando em um fluxo de trabalho mais simples e robusto.
-</p>
-```
-
-#### Exemplo em Julia:
+##### Julia:
 
 ```{julia}
 #| echo: true
@@ -430,7 +398,7 @@ rename!(dataset_eletric_cars, "Top Speed kmh" => "top_speed_kmh")
 
 ------------
 
-##### Pacote dplyr
+##### R - Pacote dplyr
 
 ```{r}
 #| echo: true
@@ -463,7 +431,7 @@ dataset_eletric_cars.columns = [
 
 ----------
 
-### Select
+<h5><code>Select</code></h5>
 
 ```{=html}
 <p style="font-size:0.6em; color:#555;">
@@ -471,26 +439,24 @@ A seleção de colunas é fundamental para tornar o código mais claro, eficient
 </p>
 ```
 
-#### Exemplo em Julia:
+##### Julia:
 
 ```{julia}
 #| echo: true
 #| eval: false
 using DataFrames
 
-# Seleção simples de colunas
-df_subset = select(dataset_eletric_cars, [:Brand, :Model, :Battery_capacity_kWh])
+# Selecionando algumas colunas específicas
+info_basica = select(dataset_eletric_cars, [:Brand, :Model, :Battery_capacity_kWh])
 
-# Também é possível selecionar intervalos de colunas:
-df_subset2 = select(dataset_eletric_cars, Between(:Brand, :Top_Speed_kmh))
+# Seleção de um intervalo de colunas (da primeira até a última do intervalo escolhido)
+seleciona_intervalo = select(dataset_eletric_cars, Between(:Brand, :Top_Speed_kmh))
 
-# Seleção por posição:
-df_subset3 = select(dataset_eletric_cars, 1:3)
+# Seleção pela posição das colunas (aqui pegamos as três primeiras)
+tres_primeiras_colunas = select(dataset_eletric_cars, 1:3)
 
-# Deselecionar colunas (remover):
-df_subset4 = select(dataset_eletric_cars, Not(["Model", "Brand"]))
-
-
+# Removendo colunas que não queremos manter
+sem_marca_modelo = select(dataset_eletric_cars, Not(["Model", "Brand"]))
 ```
 
 ------------
@@ -502,22 +468,21 @@ df_subset4 = select(dataset_eletric_cars, Not(["Model", "Brand"]))
 #| eval: false
 library(dplyr)
 
-# Seleção simples
-df_subset <- dataset_eletric_cars %>%
+# Seleção simples de algumas colunas
+info_basica <- dataset_eletric_cars %>%
   select(Brand, Model, Battery_capacity_kWh)
 
-# Seleção por intervalo de colunas
-df_subset2 <- dataset_eletric_cars %>%
+# Seleção de intervalo de colunas (da primeira até a última do intervalo escolhido)
+seleciona_intervalo <- dataset_eletric_cars %>%
   select(Brand:Top.Speed.kmh)
 
-# Seleção por padrão de nome
-df_subset3 <- dataset_eletric_cars %>%
+# Seleção por padrão no nome da coluna (aqui pegamos todas que começam com "Bat")
+colunas_bateria <- dataset_eletric_cars %>%
   select(starts_with("Bat"))
 
-# Deselecionar colunas
-df_subset4 <- dataset_eletric_cars %>%
+# Removendo colunas que não queremos manter
+sem_marca_modelo <- dataset_eletric_cars %>%
   select(-Model, -Brand)
-
 ```
 
 -------------
@@ -529,17 +494,17 @@ df_subset4 <- dataset_eletric_cars %>%
 #| eval: false
 import pandas as pd
 
-# Seleção simples
-df_subset = dataset_eletric_cars[["Brand", "Model", "Battery_capacity_kWh"]]
+# Seleção simples de algumas colunas
+info_basica = dataset_eletric_cars[["Brand", "Model", "Battery_capacity_kWh"]]
 
-# Seleção de intervalo pelo índice
-df_subset2 = dataset_eletric_cars.iloc[:, 0:3]  # primeiras 3 colunas
+# Seleção de um intervalo pelo índice (aqui pegamos as três primeiras colunas)
+seleciona_intervalo = dataset_eletric_cars.iloc[:, 0:3]
 
-# Seleção usando padrão de nome
-df_subset3 = dataset_eletric_cars.filter(regex="^Bat")
+# Seleção por padrão no nome da coluna (todas que começam com "Bat")
+colunas_bateria = dataset_eletric_cars.filter(regex="^Bat")
 
-# Deselecionar colunas
-df_subset4 = dataset_eletric_cars.drop(columns=["Model", "Brand"])
+# Removendo colunas que não queremos manter
+sem_marca_modelo = dataset_eletric_cars.drop(columns=["Model", "Brand"])
 
 ```
 
@@ -562,14 +527,14 @@ A função de transformação é fundamental para criar novas variáveis ou modi
 using DataFrames
 
 # Criando novas colunas com transform
-df_transformed = transform(
+dados_transformados = transform(
     dataset_eletric_cars,
-    :Battery_capacity_kWh => (x -> x .* 1000) => :battery_wh,
-    :Top_Speed_kmh => (x -> x ./ 3.6) => :top_speed_ms
+    :Battery_capacity_kWh => (x -> x .* 1000) => :bateria_wh,
+    :Top_Speed_kmh => (x -> x ./ 3.6) => :velocidade_ms
 )
 
 # Aplicando múltiplas funções a uma mesma coluna
-df_transformed2 = transform(
+resumo_bateria = transform(
     dataset_eletric_cars,
     :Battery_capacity_kWh => [mean, std]
 )
@@ -586,20 +551,19 @@ df_transformed2 = transform(
 #| eval: false
 library(dplyr)
 
-# Criando novas colunas
-df_transformed <- dataset_eletric_cars %>%
+# Criando novas colunas com mutate
+dados_transformados <- dataset_eletric_cars %>%
   mutate(
-    battery_wh = Battery_capacity_kWh * 1000,
-    top_speed_ms = Top.Speed.kmh / 3.6
+    bateria_wh    = Battery_capacity_kWh * 1000,
+    velocidade_ms = Top.Speed.kmh / 3.6
   )
 
-# Aplicando múltiplas transformações a uma mesma coluna
-df_transformed2 <- dataset_eletric_cars %>%
+# Aplicando várias transformações à mesma coluna
+resumo_bateria <- dataset_eletric_cars %>%
   mutate(
-    battery_mean = mean(Battery_capacity_kWh),
-    battery_sd   = sd(Battery_capacity_kWh)
+    media_bateria = mean(Battery_capacity_KWh),
+    desvio_bateria = sd(Battery_capacity_KWh)
   )
-
 ```
 
 ----------------------------
@@ -607,21 +571,18 @@ df_transformed2 <- dataset_eletric_cars %>%
 ##### Python - Biblioteca Pandas
 
 ```{python}
-#| echo: true
-#| eval: false
 import pandas as pd
 
-# Criando novas colunas
-df_transformed = dataset_eletric_cars.assign(
-    battery_wh=lambda df: df["Battery_capacity_kWh"] * 1000,
-    top_speed_ms=lambda df: df["Top Speed kmh"] / 3.6
+# Criando novas colunas com assign
+dados_transformados = dataset_eletric_cars.assign(
+    bateria_wh=lambda df: df["Battery_capacity_kWh"] * 1000,
+    velocidade_ms=lambda df: df["Top Speed kmh"] / 3.6
 )
 
-# Aplicando múltiplas funções a uma única coluna
-df_transformed2 = dataset_eletric_cars.copy()
-df_transformed2["battery_mean"] = dataset_eletric_cars["Battery_capacity_kWh"].mean()
-df_transformed2["battery_sd"]   = dataset_eletric_cars["Battery_capacity_kWh"].std()
-
+# Aplicando várias transformações a uma única coluna
+resumo_bateria = dataset_eletric_cars.copy()
+resumo_bateria["media_bateria"] = dataset_eletric_cars["Battery_capacity_kWh"].mean()
+resumo_bateria["desvio_bateria"] = dataset_eletric_cars["Battery_capacity_kWh"].std()
 ```
 
 ------------------------------------
