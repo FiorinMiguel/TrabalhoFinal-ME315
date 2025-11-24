@@ -1,0 +1,504 @@
+---
+title: ""
+author: ""
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    code-copy: true
+    title-slide: false
+    allow-html: true
+---
+
+<!-- Slide 1: Capa -->
+
+```{=html}
+<img src="pictures/capa.png"
+     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"/>
+```
+
+------------------------------------------------------------------------
+
+## **Foco Principal:** Manipulação prática de dados
+
+::: {style="position: relative; min-height: 400px;"}
+-   Contexto: Importância da manipulação de dados\
+-   Tipos de dados e estruturas\
+-   Inspeção inicial e exploração\
+-   Limpeza de dados\
+-   Transformações básicas\
+-   Operações agregadas\
+-   Quando usar (e quando não usar) Julia
+:::
+
+------------------------------------------------------------------------
+
+```{=html}
+<h3><strong>Sem Dados Limpos, Não Há Decisão Confiável</strong></h3>
+
+<img src="pictures/bad-data-makes-bad-decisions-preview.png" style="width:70%; margin-top:15px;"/>
+
+<p style="font-size: 0.7em; color: #1C1C1C; line-height: 1.4; margin-top: 10px;">
+O problema não é só coletar dados, mas torná-los úteis. O grande desafio está em transformar dados brutos em informação confiável por meio de uma boa manipulação, etapa crucial para decisões estratégicas.
+</p>
+
+<p style="font-size: 0.5em; color: #666; font-style: italic; margin-top: 15px;">
+Fonte: <a href="https://www.globenewswire.com/news-release/2025/02/06/3022005/0/en/Bad-Data-Makes-Bad-Decisions-58-of-Leaders-Report-Companies-Using-Inaccurate-Data-for-Big-Decisions.html" target="_blank">GlobeNewswire (2025)</a>
+</p>
+```
+
+------------------------------------------------------------------------
+
+```{=html}
+<h3><strong>Tipos de Dados e Estruturas</strong></h3>
+<p style="font-size:0.7em; color:#555;">
+Entender como os dados são armazenados impacta diretamente a performance e a facilidade de uso.
+</p>
+```
+
+![](pictures/dataStructures.png)
+
+------------------------------------------------------------------------
+
+```{=html}
+<h4><strong>Arrays</strong></h4>
+<p style="font-size:0.7em; color:#555;">
+Os arrays são a base de praticamente tudo na linguagem Julia: eles armazenam dados de forma contínua na memória, o que dá muita eficiência. Essa estrutura pode representar tanto <strong>vetores</strong> quanto <strong>matrizes</strong>
+</p>
+
+<h5><strong>Julia</strong></h5>
+```
+
+```{julia}
+#| echo: true
+#| eval: false
+# Criando Arrays
+vetor = [1,2,3,4]
+matriz = [1 2 3; 4 5 6]
+
+# Verificando os tipos de dados
+typeof(vetor) # Vector{Int64}
+typeof(matriz) # Matrix{Int64}
+
+# Acessando elementos
+vetor[1] # 1
+matriz[2,3] # 6
+```
+
+------------------------------------------------------------------------
+
+##### **R**
+
+```{r}
+#| echo: true
+#| eval: false
+vetor <- c(1:4)
+matriz <- matrix(1:6, nrow = 2)
+
+typeof(vetor)
+typeof(matriz)
+
+vetor[1]
+matriz[2,3]
+```
+
+##### Python
+
+```{python}
+#| echo: true
+#| eval: false
+import numpy as np
+
+vetor = np.array([1, 2, 3, 4])
+matriz = np.array([[1, 2, 3],
+                   [4, 5, 6]])
+
+print(type(vetor)) 
+print(type(matriz)) 
+print(vetor[0])
+print(matriz[2,3])
+```
+
+------------------------------------------------------------------------
+
+#### Valores Ausentes: O missing do Julia
+
+```{julia}
+#| echo: true
+#| eval: false
+x = [15, 22, missing, 3]
+mean(x)                # erro
+mean(skipmissing(x))   # 13.33
+```
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+Julia não ignora valores ausentes: se houver missing, funções geram erro, forçando você a tratar os dados. Isso evita resultados incorretos e garante análises mais seguras.
+</p>
+```
+
+##### **R**
+
+```{r}
+#| echo: true
+#| eval: false
+x <- c(15, 22, NA, 3)
+mean(x)          # Retorna NA
+mean(x, na.rm=TRUE)  # Ignora os NAs, retorna 13.33
+```
+
+##### **Python**
+
+```{python}
+#| echo: true
+#| eval: false
+import numpy as np
+x = np.array([15, 22, np.nan, 3])
+np.mean(x)              # Retorna nan
+np.nanmean(x)           # Ignora os NaNs, retorna 13.33
+```
+
+------------------------------------------------------------------------
+
+#### Trabalhando com Dados Tabulares: DataFrames
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+Na prática, quase sempre lidamos com dados tabulares. Em Julia, o DataFrame organiza colunas como vetores alinhados e facilita manipulação e análise de dados.
+</p>
+
+<div style="display: flex; justify-content: flex-start; align-items: center; gap: 20px;">
+  <img src="pictures/DF-exemplo.png"
+       style="width: 35%; height: auto;"/>
+  <img src="pictures/Dataframe.png"
+       style="width: 60%; height: auto;"/>
+</div>
+
+<p style="font-size:0.6em; color:#555;">
+Cada coluna de um DataFrame é um vetor com elementos do mesmo tipo, e todas as colunas têm o mesmo número de elementos. Isso transforma o DataFrame em uma tabela de vetores alinhados, permitindo acessar colunas, linhas ou células com facilidade.
+</p>
+```
+
+------------------------------------------------------------------------
+
+#### Exemplo:
+
+```{julia}
+#| echo: true
+#| eval: false
+# Importa o pacote de manipulacao de tabelas
+using DataFrames 
+
+DadosAlunos = DataFrame(Nome=["Ana", "João", "Carlos"], # Vetor de strings
+               Idade=[23, 31, 20], # Vetor de inteiros
+               Nota=[8.5, 7.0, 9.2]) # Vetor de floats
+```
+
+##### Base do R
+
+```{r}
+#| echo: true
+#| eval: false
+DadosAlunos <- data.frame(
+  Nome = c("Ana", "João", "Carlos"), 
+  Idade = c(23, 31, 20),   
+  Nota = c(8.5, 7.0, 9.2)
+)
+
+```
+
+##### Python - Biblioteca Pandas
+
+```{python}
+#| echo: true
+#| eval: false
+import pandas as pd  # Pacote para trabalhar com dados tabulares
+
+DadosAlunos = pd.DataFrame({
+    "Nome": ["Ana", "João", "Carlos"],
+    "Idade": [23, 31, 20],        
+    "Nota": [8.5, 7.0, 9.2]    
+})
+
+```
+
+------------------------------------------------------------------------
+
+### Inspeção inicial e exploração
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+A inspeção inicial é importante para entender a estrutura e a qualidade dos dados, identificando inconsistências, valores ausentes ou outliers. Para ilustrar os conceitos, usaremos o dataset electric_vehicles_spec_2025 do pacote dplyr (R)(?).
+</p>
+```
+#### Visualização das primeiras e últimas linhas
+
+```{julia}
+#| include: false
+using CSV, DataFrames
+dataset_eletric_cars = CSV.read("dataset/electric_vehicles_spec_2025.csv", DataFrame)
+```
+
+```{julia}
+#| echo: true
+#| eval: false
+first(dataset_eletric_cars, 6)
+```
+
+```{r}
+#| echo: true
+#| eval: false
+head(dataset_eletric_cars) # primeiras 6 linhas
+```
+
+```{python}
+#| echo: true
+#| eval: false
+import pandas as pd
+print(dataset_eletric_cars.head())
+```
+
+```{julia}
+#| echo: false
+first(dataset_eletric_cars, 6)
+```
+------------------------------------------------------------------------
+
+#### Estrutura do DataSet
+
+```{=html}
+<p style="font-size:0.5em; color:#555;">
+Analisar a estrutura do dataset é essencial para compreender o tipo e o papel de cada variável, facilitando a escolha das operações adequadas. Essa etapa também ajuda a identificar inconsistências ou tipos incorretos de dados que podem afetar as análises posteriores.
+</p>
+```
+
+<h5><code>describe(...)</code></h5>
+
+```{julia}
+#| echo: true
+#| eval: false
+describe(dataset_eletric_cars)
+```
+
+```{julia}
+#| echo: false
+describe(dataset_eletric_cars)
+```
+
+```{=html}
+<p style="font-size:0.5em; color:#555;">
+A função <code>describe(...)</code> mostra um resumo das colunas, com estatísticas para numéricas e frequências para categóricas, ajudando a identificar missing values e padrões.
+</p>
+```
+
+------------------------------------------------------------------------
+
+<h5><code>names(...)</code></h5>
+
+```{julia}
+#| echo: true
+#| eval: false
+names(dataset_eletric_cars)
+```
+
+```{julia}
+#| echo: false
+names(dataset_eletric_cars)
+```
+
+```{=html}
+<p style="font-size:0.5em; color:#555;">
+A função <code>names(...)</code> retorna os nomes de todas as colunas do dataset, permitindo entender rapidamente a estrutura dos dados.
+</p>
+```
+
+------------------------------------------------------------------------
+
+<h5><code>eltype.(eachcol(...))</code></h5>
+
+```{julia}
+#| echo: true
+#| eval: false
+eltype.(eachcol(dataset_eletric_cars))
+```
+
+```{julia}
+#| echo: false
+eltype.(eachcol(dataset_eletric_cars))
+```
+
+<p style="font-size:0.5em; color:#555;">
+
+A função <code>eltype.(eachcol(...))</code> mostra o tipo de cada coluna, indicando se são numéricas, categóricas ou outro tipo de dado.
+
+</p>
+
+------------------------------------------------------------------------
+
+##### R
+
+```{r}
+#| echo: true
+#| eval: false
+summary(dataset_eletric_cars) #estatísticas descritivas das colunas
+str(dataset_eletric_cars) # estrutura interna do dataset.
+names(dataset_eletric_cars) 
+```
+
+##### Python - Pandas
+
+```{python}
+#| echo: true
+#| eval: false
+import pandas as pd
+dataset_eletric_cars.info() # Mostra estrutura, tipos, contagem de não-nulos...
+print(dataset_eletric_cars.columns.tolist()) # nomes das colunas
+print(dataset_eletric_cars.dtypes) # tipos de colunas
+print(dataset_eletric_cars.describe()) # estatísticas descritivas
+```
+
+------------------------------------------------------------------------
+
+#### **Limpeza de dados**
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+A limpeza de dados assegura qualidade e confiabilidade nas análises. Sem ela, os resultados podem ser distorcidos e levar a conclusões incorretas.
+</p>
+```
+
+##### **Identificação de valores ausentes em um DataFrame**
+
+###### Vetorização
+
+```{julia}
+#| echo: true
+#| eval: false
+ismissing.(dataset_eletric_cars.model)  # retorna true/false para cada linha
+```
+
+###### Contagem de valores ausentes
+
+```{julia}
+#| echo: true
+#| eval: false
+count(ismissing, dataset_eletric_cars.model) # conta missings de uma coluna
+map(col -> count(ismissing, col), eachcol(dataset_eletric_cars))
+```
+
+------------------------------------------------------------------------
+
+###### Transformando em um DataFrame:
+
+```{julia}
+#| echo: true
+#| eval: false
+missing_count = DataFrame(
+    Coluna = names(dataset_eletric_cars),
+    Missings = map(col -> count(ismissing, col), eachcol(dataset_eletric_cars))
+)
+```
+
+```{julia}
+#| echo: false
+missing_count = DataFrame(
+    Coluna = names(dataset_eletric_cars),
+    Missings = map(col -> count(ismissing, col), eachcol(dataset_eletric_cars))
+)
+```
+
+------------------------------------------------------------------------
+
+#### Detecção e tratamento de outliers - Método IQR (regra do boxplot)
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+Analisando a coluna number_of_cells (células individuais de lítio que compõem a bateria do carro elétrico).
+</p>
+```
+
+```{julia}
+#| echo: true
+#| eval: false
+using Statistics
+
+# Calcular limites IQR
+cells_data = skipmissing(dataset_eletric_cars.number_of_cells);
+Q1, Q3 = quantile(cells_data, [0.25, 0.75]);
+IQR_val = Q3 - Q1;
+
+lower = Q1 - 1.5 * IQR_val;
+upper = Q3 + 1.5 * IQR_val;
+
+# Filtrar outliers
+outlier_rows = filter(row -> 
+    !ismissing(row.number_of_cells) && 
+    (row.number_of_cells < lower || row.number_of_cells > upper),
+    dataset_eletric_cars
+);
+
+println("Q1: " , Q1)
+println("Q3: " , Q3)
+println("IQR: ", IQR_val)
+
+#tabela final
+outlier_rows[:, [:model, :number_of_cells]]
+```
+
+------------------------------------------------------------------------
+
+```{julia}
+#| echo: false
+using Statistics
+
+# Calcular limites IQR
+cells_data = skipmissing(dataset_eletric_cars.number_of_cells);
+Q1, Q3 = quantile(cells_data, [0.25, 0.75]);
+IQR_val = Q3 - Q1;
+
+lower = Q1 - 1.5 * IQR_val;
+upper = Q3 + 1.5 * IQR_val;
+
+# Filtrar outliers
+outlier_rows = filter(row -> 
+    !ismissing(row.number_of_cells) && 
+    (row.number_of_cells < lower || row.number_of_cells > upper),
+    dataset_eletric_cars
+);
+println("Q1: " , Q1)
+println("Q3: " , Q3)
+println("IQR: ", IQR_val)
+
+#tabela final
+outlier_rows[:, [:model, :number_of_cells]]
+```
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+Os outliers identificados representam os carros elétricos premium do mercado, com baterias excepcionalmente grandes, mostrando que a análise foi bem-sucedida em encontrar os valores realmente diferentes no conjunto de dados.
+</p>
+```
+
+------------------------------------------------------------------------
+#### Filtragem de Dados: filter()
+##### Vetores 
+```{julia}
+#| echo: true
+#| eval: false
+# filter(função_predicado, coleção)
+# Exemplos com vetores:
+v = [1,3,4,5,7,9,10, missing];
+v_filtrado = filter(x -> !ismissing(x) && x > 5, v)
+#Resultado:
+# v_filtrado = [7,9,10]
+
+marcas = ["Honda", "Mercedes-Benz", "Hyndai", "Jeep", "BMW", "Volkswagen", "Chevrolet"];
+longos = filter(marcas -> length(marcas) > 5, marcas)
+# Resultado: 
+# longos = ["Mercedes-Benz", "Hyundai", "Volkswagen", "Chevrolet"]
+```
+
+
+
+
+
