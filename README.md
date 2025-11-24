@@ -3,7 +3,7 @@
 ## 📁 Estrutura do Conteúdo
 
 ### **1. Contextualização**
-- [x ] O que é manipulação de dados  
+- [ ] O que é manipulação de dados  
 - [ ] Por que utilizar Julia para análise  
 - [ ] Principais pacotes utilizados
 
