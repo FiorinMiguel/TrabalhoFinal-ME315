@@ -394,50 +394,50 @@
 <section class="slide level2">
 
 <!-- Slide 1: Capa -->
-<img src="pictures/capa.png" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+<div class="slide" style="padding:0;">
+<div style="
+  position: absolute;
+  inset: 0;
+  background-image: url('capa.png');
+  background-size: cover;
+  background-position: center;
+">
+
+</div>
+</div>
 </section>
 <section id="foco-principal-manipulação-prática-de-dados" class="slide level2">
 <h2><strong>Foco Principal:</strong> Manipulação prática de dados</h2>
 <div style="position: relative; min-height: 400px;">
 <ul>
-<li>Contexto: Importância da manipulação de dados<br>
-</li>
 <li>Tipos de dados e estruturas<br>
 </li>
 <li>Inspeção inicial e exploração<br>
 </li>
-<li>Limpeza de dados<br>
+<li>Estrutura do dataset<br>
 </li>
-<li>Transformações básicas<br>
+<li>Criar DataFrame<br>
 </li>
-<li>Operações agregadas<br>
+<li>Select, Rename, Transform<br>
 </li>
-<li>Quando usar (e quando não usar) Julia</li>
+<li>Filtragem<br>
+</li>
+<li>Tratamento de Outliers<br>
+</li>
 </ul>
 </div>
 </section>
 <section class="slide level2">
 
-<h3><strong>Sem Dados Limpos, Não Há Decisão Confiável</strong></h3>
-
-<img src="pictures/bad-data-makes-bad-decisions-preview.png" style="width:70%; margin-top:15px;">
-
-<p style="font-size: 0.7em; color: #1C1C1C; line-height: 1.4; margin-top: 10px;">
-O problema não é só coletar dados, mas torná-los úteis. O grande desafio está em transformar dados brutos em informação confiável por meio de uma boa manipulação, etapa crucial para decisões estratégicas.
-</p>
-
-<p style="font-size: 0.5em; color: #666; font-style: italic; margin-top: 15px;">
-Fonte: <a href="https://www.globenewswire.com/news-release/2025/02/06/3022005/0/en/Bad-Data-Makes-Bad-Decisions-58-of-Leaders-Report-Companies-Using-Inaccurate-Data-for-Big-Decisions.html" target="_blank">GlobeNewswire (2025)</a>
-</p>
-</section>
-<section class="slide level2">
-
 <h3><strong>Tipos de Dados e Estruturas</strong></h3>
-<p style="font-size:0.7em; color:#555;">
-Entender como os dados são armazenados impacta diretamente a performance e a facilidade de uso.
+
+<img src="dataStructures.png" style="width:70%; margin-top:15px;">
+
+<p style="font-size:0.7em; color:#1C1C1C; line-height:1.4; margin-top:10px;">
+Entender como os dados são armazenados impacta diretamente a performance, o consumo de memória e a facilidade de manipulação. Escolher a estrutura correta é fundamental para um fluxo de trabalho eficiente em Julia.
 </p>
 
-<img data-src="pictures/dataStructures.png" class="r-stretch"></section>
+</section>
 <section class="slide level2">
 
 <h4><strong>Arrays</strong></h4>
@@ -489,7 +489,7 @@ Os arrays são a base de praticamente tudo na linguagem Julia: eles armazenam da
 </section>
 <section class="slide level2">
 
-<h4 id="valores-ausentes-o-missing-do-julia">Valores Ausentes: O missing do Julia</h4>
+<h3 id="valores-ausentes-o-missing-do-julia">Valores Ausentes: O missing do Julia</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href=""></a>x <span class="op">=</span> [<span class="fl">15</span>, <span class="fl">22</span>, <span class="cn">missing</span>, <span class="fl">3</span>]</span>
 <span id="cb4-2"><a href=""></a><span class="fu">mean</span>(x)                <span class="co"># erro</span></span>
@@ -514,14 +514,14 @@ Julia não ignora valores ausentes: se houver missing, funções geram erro, for
 </section>
 <section class="slide level2">
 
-<h4 id="trabalhando-com-dados-tabulares-dataframes">Trabalhando com Dados Tabulares: DataFrames</h4>
+<h3 id="trabalhando-com-dados-tabulares-dataframes">Trabalhando com Dados Tabulares: DataFrames</h3>
 <p style="font-size:0.6em; color:#555;">
 Na prática, quase sempre lidamos com dados tabulares. Em Julia, o DataFrame organiza colunas como vetores alinhados e facilita manipulação e análise de dados.
 </p>
 
 <div style="display: flex; justify-content: flex-start; align-items: center; gap: 20px;">
-  <img src="pictures/DF-exemplo.png" style="width: 35%; height: auto;">
-  <img src="pictures/Dataframe.png" style="width: 60%; height: auto;">
+  <img src="DF-exemplo.png" style="width: 35%; height: auto;">
+  <img src="Dataframe.png" style="width: 60%; height: auto;">
 </div>
 
 <p style="font-size:0.6em; color:#555;">
@@ -530,7 +530,7 @@ Cada coluna de um DataFrame é um vetor com elementos do mesmo tipo, e todas as 
 </section>
 <section class="slide level2">
 
-<h4 id="exemplo">Exemplo:</h4>
+<h5 id="julia">Julia</h5>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href=""></a><span class="co"># Importa o pacote de manipulacao de tabelas</span></span>
 <span id="cb7-2"><a href=""></a><span class="im">using</span> <span class="bu">DataFrames</span> </span>
@@ -562,9 +562,11 @@ Cada coluna de um DataFrame é um vetor com elementos do mesmo tipo, e todas as 
 
 <h3 id="inspeção-inicial-e-exploração">Inspeção inicial e exploração</h3>
 <p style="font-size:0.6em; color:#555;">
-A inspeção inicial é importante para entender a estrutura e a qualidade dos dados, identificando inconsistências, valores ausentes ou outliers. Para ilustrar os conceitos, usaremos o dataset StarWars do pacote dplyr (R).
+A inspeção inicial é essencial para compreender a estrutura e a qualidade dos dados, permitindo identificar inconsistências, valores ausentes e possíveis outliers. Para exemplificar esses conceitos, utilizaremos o dataset <em>Electric Vehicles Spec 2025</em>, obtido no Kaggle.
 </p>
-<h4 id="visualização-das-primeiras-e-últimas-linhas">Visualização das primeiras e últimas linhas</h4>
+
+<h4 id="visualização-das-primeiras-linhas">Visualização das primeiras linhas</h4>
+<h5 id="julia-1">Julia</h5>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href=""></a><span class="fu">first</span>(dataset_eletric_cars, <span class="fl">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -583,37 +585,37 @@ A inspeção inicial é importante para entender a estrutura e a qualidade dos d
                                                               18 columns omitted</code></pre>
 </div>
 </div>
-<p style="font-size:0.6em; color:#555;">
-Da mesma forma, utilizamos <code>last(dataset_eletric_cars, 6)</code> para visualizar as últimas 6 linhas.
-</p>
 </section>
 <section class="slide level2">
 
 <h5 id="r-2">R</h5>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">head</span>(dataset_eletric_cars) <span class="co"># primeiras 6 linhas</span></span>
-<span id="cb12-2"><a href=""></a><span class="fu">tail</span>(dataset_eletric_cars) <span class="co"># últimas 6 linhas</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">head</span>(dataset_eletric_cars) <span class="co"># primeiras 6 linhas</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<h5 id="python---pandas">Python - Pandas</h5>
+<h5 id="python-2">Python</h5>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb13-2"><a href=""></a></span>
-<span id="cb13-3"><a href=""></a><span class="bu">print</span>(dataset_eletric_cars.head())</span>
-<span id="cb13-4"><a href=""></a><span class="bu">print</span>(dataset_eletric_cars.tail())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-2"><a href=""></a><span class="bu">print</span>(dataset_eletric_cars.head())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
-<h4 id="estrutura-do-dataset">Estrutura do DataSet</h4>
-<p style="font-size:0.5em; color:#555;">
+<h3 id="estrutura-do-dataset">Estrutura do DataSet</h3>
+<p style="font-size:0.6em; color:#555;">
 Analisar a estrutura do dataset é essencial para compreender o tipo e o papel de cada variável, facilitando a escolha das operações adequadas. Essa etapa também ajuda a identificar inconsistências ou tipos incorretos de dados que podem afetar as análises posteriores.
 </p>
 <h5>
 <code>describe(…)</code>
 </h5>
+<p style="font-size:0.6em; color:#555;">
+A função <code>describe(...)</code> mostra um resumo das colunas, com estatísticas para numéricas e frequências para categóricas, ajudando a identificar missing values e padrões.
+</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href=""></a><span class="fu">describe</span>(dataset_eletric_cars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section class="slide level2">
+
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>22×7 DataFrame
@@ -639,9 +641,6 @@ Analisar a estrutura do dataset é essencial para compreender o tipo e o papel d
                                                     4 columns and 7 rows omitted</code></pre>
 </div>
 </div>
-<p style="font-size:0.5em; color:#555;">
-A função <code>describe(...)</code> mostra um resumo das colunas, com estatísticas para numéricas e frequências para categóricas, ajudando a identificar missing values e padrões.
-</p>
 </section>
 <section class="slide level2">
 
@@ -676,7 +675,7 @@ A função <code>describe(...)</code> mostra um resumo das colunas, com estatís
  "source_url"</code></pre>
 </div>
 </div>
-<p style="font-size:0.5em; color:#555;">
+<p style="font-size:0.6em; color:#555;">
 A função <code>names(...)</code> retorna os nomes de todas as colunas do dataset, permitindo entender rapidamente a estrutura dos dados.
 </p>
 </section>
@@ -713,8 +712,8 @@ A função <code>names(...)</code> retorna os nomes de todas as colunas do datas
  String</code></pre>
 </div>
 </div>
-<p style="font-size:0.5em; color:#555;">
-A função <code>eltype.(eachcol(…))</code> mostra o tipo de cada coluna, indicando se são numéricas, categóricas ou outro tipo de dado.
+<p style="font-size:0.6em; color:#555;">
+A função <code>eltype.(eachcol(...))</code> mostra o tipo de cada coluna, indicando se são numéricas, categóricas ou outro tipo de dado.
 </p>
 </section>
 <section class="slide level2">
@@ -723,9 +722,9 @@ A função <code>eltype.(eachcol(…))</code> mostra o tipo de cada coluna, indi
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">summary</span>(dataset_eletric_cars) <span class="co">#estatísticas descritivas das colunas</span></span>
 <span id="cb20-2"><a href=""></a><span class="fu">str</span>(dataset_eletric_cars) <span class="co"># estrutura interna do dataset.</span></span>
-<span id="cb20-3"><a href=""></a><span class="fu">names</span>(dataset_eletric_cars) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-3"><a href=""></a><span class="fu">names</span>(dataset_eletric_cars) <span class="co"># nomes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<h5 id="python---pandas-1">Python - Pandas</h5>
+<h5 id="python---pandas">Python - Pandas</h5>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb21-2"><a href=""></a>dataset_eletric_cars.info() <span class="co"># Mostra estrutura, tipos, contagem de não-nulos...</span></span>
@@ -733,14 +732,470 @@ A função <code>eltype.(eachcol(…))</code> mostra o tipo de cada coluna, indi
 <span id="cb21-4"><a href=""></a><span class="bu">print</span>(dataset_eletric_cars.dtypes) <span class="co"># tipos de colunas</span></span>
 <span id="cb21-5"><a href=""></a><span class="bu">print</span>(dataset_eletric_cars.describe()) <span class="co"># estatísticas descritivas</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section class="slide level2">
+
+<h3>
+<code>Rename</code>
+</h3>
+<p style="font-size:0.6em; color:#555;">
+Seguir boas práticas ao nomear variáveis melhora a clareza e reduz erros no código. Adotar um padrão como o <em>snake_case</em> — sem espaços, acentos ou caracteres especiais, usando minúsculas e “_” — garante consistência e compatibilidade entre linguagens, tornando o trabalho mais organizado.
+</p>
+<h5 id="julia-2">Julia:</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href=""></a><span class="co"># Exemplo simples: </span></span>
+<span id="cb22-2"><a href=""></a><span class="fu">rename!</span>(dataset_eletric_cars, <span class="st">"Brand"</span> <span class="op">=&gt;</span> <span class="st">"brand"</span>)</span>
+<span id="cb22-3"><a href=""></a><span class="fu">rename!</span>(dataset_eletric_cars, <span class="st">"Model"</span> <span class="op">=&gt;</span> <span class="st">"model"</span>)</span>
+<span id="cb22-4"><a href=""></a><span class="fu">rename!</span>(dataset_eletric_cars, <span class="st">"Top Speed kmh"</span> <span class="op">=&gt;</span> <span class="st">"top_speed_kmh"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h5 id="r---pacote-dplyr">R - Pacote dplyr</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb23-2"><a href=""></a>dataset_eletric_cars <span class="ot">&lt;-</span> dataset_eletric_cars <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href=""></a>  <span class="fu">rename</span>(</span>
+<span id="cb23-4"><a href=""></a>    <span class="at">brand =</span> Brand,</span>
+<span id="cb23-5"><a href=""></a>    <span class="at">model =</span> Model,</span>
+<span id="cb23-6"><a href=""></a>    <span class="at">top_speed_kmh =</span> Top.Speed.kmh,</span>
+<span id="cb23-7"><a href=""></a>    <span class="at">battery_capacity_kwh =</span> Battery.capacity.kWh</span>
+<span id="cb23-8"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<h5 id="python---biblioteca-pandas-1">Python - Biblioteca Pandas</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href=""></a>dataset_eletric_cars <span class="op">=</span> dataset_eletric_cars.rename(columns<span class="op">=</span>{</span>
+<span id="cb24-2"><a href=""></a>    <span class="st">"Brand"</span>: <span class="st">"brand"</span>,</span>
+<span id="cb24-3"><a href=""></a>    <span class="st">"Model"</span>: <span class="st">"model"</span>,</span>
+<span id="cb24-4"><a href=""></a>    <span class="st">"Top.Speed.kmh"</span>: <span class="st">"top_speed_kmh"</span>,</span>
+<span id="cb24-5"><a href=""></a>    <span class="st">"Battery.capacity.kWh"</span>: <span class="st">"battery_capacity_kwh"</span></span>
+<span id="cb24-6"><a href=""></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3>
+<code>Select</code>
+</h3>
+<p style="font-size:0.6em; color:#555;">
+A seleção de colunas é fundamental para tornar o código mais claro, eficiente e menos sujeito a erros, permitindo trabalhar apenas com as variáveis necessárias. Mantê-la explícita melhora a transparência e facilita a compreensão do código no futuro.
+</p>
+<h5 id="julia-3">Julia:</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb25-1"><a href=""></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb25-2"><a href=""></a></span>
+<span id="cb25-3"><a href=""></a><span class="co"># Selecionando algumas colunas específicas</span></span>
+<span id="cb25-4"><a href=""></a>info_basica <span class="op">=</span> <span class="fu">select</span>(dataset_eletric_cars, [<span class="op">:</span>Brand, <span class="op">:</span>Model, <span class="op">:</span>Battery_capacity_kWh])</span>
+<span id="cb25-5"><a href=""></a></span>
+<span id="cb25-6"><a href=""></a><span class="co"># Seleção de um intervalo de colunas (da primeira até a última do intervalo escolhido)</span></span>
+<span id="cb25-7"><a href=""></a>seleciona_intervalo <span class="op">=</span> <span class="fu">select</span>(dataset_eletric_cars, <span class="fu">Between</span>(<span class="op">:</span>Brand, <span class="op">:</span>Top_Speed_kmh))</span>
+<span id="cb25-8"><a href=""></a></span>
+<span id="cb25-9"><a href=""></a><span class="co"># Seleção pela posição das colunas (aqui pegamos as três primeiras)</span></span>
+<span id="cb25-10"><a href=""></a>tres_primeiras_colunas <span class="op">=</span> <span class="fu">select</span>(dataset_eletric_cars, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>)</span>
+<span id="cb25-11"><a href=""></a></span>
+<span id="cb25-12"><a href=""></a><span class="co"># Removendo colunas que não queremos manter</span></span>
+<span id="cb25-13"><a href=""></a>sem_marca_modelo <span class="op">=</span> <span class="fu">select</span>(dataset_eletric_cars, <span class="fu">Not</span>([<span class="st">"Model"</span>, <span class="st">"Brand"</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h5 id="pacote-dplyr">Pacote dplyr</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb26-2"><a href=""></a></span>
+<span id="cb26-3"><a href=""></a><span class="co"># Seleção simples de algumas colunas</span></span>
+<span id="cb26-4"><a href=""></a>info_basica <span class="ot">&lt;-</span> dataset_eletric_cars <span class="sc">%&gt;%</span></span>
+<span id="cb26-5"><a href=""></a>  <span class="fu">select</span>(Brand, Model, Battery_capacity_kWh)</span>
+<span id="cb26-6"><a href=""></a></span>
+<span id="cb26-7"><a href=""></a><span class="co"># Seleção de intervalo de colunas (da primeira até a última do intervalo escolhido)</span></span>
+<span id="cb26-8"><a href=""></a>seleciona_intervalo <span class="ot">&lt;-</span> dataset_eletric_cars <span class="sc">%&gt;%</span></span>
+<span id="cb26-9"><a href=""></a>  <span class="fu">select</span>(Brand<span class="sc">:</span>Top.Speed.kmh)</span>
+<span id="cb26-10"><a href=""></a></span>
+<span id="cb26-11"><a href=""></a><span class="co"># Seleção por padrão no nome da coluna (aqui pegamos todas que começam com "Bat")</span></span>
+<span id="cb26-12"><a href=""></a>colunas_bateria <span class="ot">&lt;-</span> dataset_eletric_cars <span class="sc">%&gt;%</span></span>
+<span id="cb26-13"><a href=""></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"Bat"</span>))</span>
+<span id="cb26-14"><a href=""></a></span>
+<span id="cb26-15"><a href=""></a><span class="co"># Removendo colunas que não queremos manter</span></span>
+<span id="cb26-16"><a href=""></a>sem_marca_modelo <span class="ot">&lt;-</span> dataset_eletric_cars <span class="sc">%&gt;%</span></span>
+<span id="cb26-17"><a href=""></a>  <span class="fu">select</span>(<span class="sc">-</span>Model, <span class="sc">-</span>Brand)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h5 id="python---biblioteca-pandas-2">Python - Biblioteca Pandas</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb27-2"><a href=""></a></span>
+<span id="cb27-3"><a href=""></a><span class="co"># Seleção simples de algumas colunas</span></span>
+<span id="cb27-4"><a href=""></a>info_basica <span class="op">=</span> dataset_eletric_cars[[<span class="st">"Brand"</span>, <span class="st">"Model"</span>, <span class="st">"Battery_capacity_kWh"</span>]]</span>
+<span id="cb27-5"><a href=""></a></span>
+<span id="cb27-6"><a href=""></a><span class="co"># Seleção de um intervalo pelo índice (aqui pegamos as três primeiras colunas)</span></span>
+<span id="cb27-7"><a href=""></a>seleciona_intervalo <span class="op">=</span> dataset_eletric_cars.iloc[:, <span class="dv">0</span>:<span class="dv">3</span>]</span>
+<span id="cb27-8"><a href=""></a></span>
+<span id="cb27-9"><a href=""></a><span class="co"># Seleção por padrão no nome da coluna (todas que começam com "Bat")</span></span>
+<span id="cb27-10"><a href=""></a>colunas_bateria <span class="op">=</span> dataset_eletric_cars.<span class="bu">filter</span>(regex<span class="op">=</span><span class="st">"^Bat"</span>)</span>
+<span id="cb27-11"><a href=""></a></span>
+<span id="cb27-12"><a href=""></a><span class="co"># Removendo colunas que não queremos manter</span></span>
+<span id="cb27-13"><a href=""></a>sem_marca_modelo <span class="op">=</span> dataset_eletric_cars.drop(columns<span class="op">=</span>[<span class="st">"Model"</span>, <span class="st">"Brand"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3>
+<code>Transform</code>
+</h3>
+<p style="font-size:0.6em; color:#555;">
+A função de transformação é fundamental para criar novas variáveis ou modificar valores existentes por meio de cálculos e padronizações, permitindo adicionar ou ajustar colunas de forma sistemática. Seu uso explícito torna o código mais claro e bem documentado, o que é essencial para análises reprodutíveis e projetos com várias etapas.
+</p>
+
+<h5 id="julia-4">Julia:</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb28-1"><a href=""></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb28-2"><a href=""></a></span>
+<span id="cb28-3"><a href=""></a><span class="co"># Criando novas colunas com transform</span></span>
+<span id="cb28-4"><a href=""></a>dados_transformados <span class="op">=</span> <span class="fu">transform</span>(</span>
+<span id="cb28-5"><a href=""></a>    dataset_eletric_cars,</span>
+<span id="cb28-6"><a href=""></a>    <span class="op">:</span>Battery_capacity_kWh <span class="op">=&gt;</span> (x <span class="op">-&gt;</span> x <span class="op">.*</span> <span class="fl">1000</span>) <span class="op">=&gt;</span> <span class="op">:</span>bateria_wh,</span>
+<span id="cb28-7"><a href=""></a>    <span class="op">:</span>Top_Speed_kmh <span class="op">=&gt;</span> (x <span class="op">-&gt;</span> x <span class="op">./</span> <span class="fl">3.6</span>) <span class="op">=&gt;</span> <span class="op">:</span>velocidade_ms</span>
+<span id="cb28-8"><a href=""></a>)</span>
+<span id="cb28-9"><a href=""></a></span>
+<span id="cb28-10"><a href=""></a><span class="co"># Aplicando múltiplas funções a uma mesma coluna</span></span>
+<span id="cb28-11"><a href=""></a>resumo_bateria <span class="op">=</span> <span class="fu">transform</span>(</span>
+<span id="cb28-12"><a href=""></a>    dataset_eletric_cars,</span>
+<span id="cb28-13"><a href=""></a>    <span class="op">:</span>Battery_capacity_kWh <span class="op">=&gt;</span> [mean, std]</span>
+<span id="cb28-14"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h5 id="r---pacote-dplyr-1">R - Pacote dplyr</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb29-2"><a href=""></a></span>
+<span id="cb29-3"><a href=""></a><span class="co"># Criando novas colunas com mutate</span></span>
+<span id="cb29-4"><a href=""></a>dados_transformados <span class="ot">&lt;-</span> dataset_eletric_cars <span class="sc">%&gt;%</span></span>
+<span id="cb29-5"><a href=""></a>  <span class="fu">mutate</span>(</span>
+<span id="cb29-6"><a href=""></a>    <span class="at">bateria_wh    =</span> Battery_capacity_kWh <span class="sc">*</span> <span class="dv">1000</span>,</span>
+<span id="cb29-7"><a href=""></a>    <span class="at">velocidade_ms =</span> Top.Speed.kmh <span class="sc">/</span> <span class="fl">3.6</span></span>
+<span id="cb29-8"><a href=""></a>  )</span>
+<span id="cb29-9"><a href=""></a></span>
+<span id="cb29-10"><a href=""></a><span class="co"># Aplicando várias transformações à mesma coluna</span></span>
+<span id="cb29-11"><a href=""></a>resumo_bateria <span class="ot">&lt;-</span> dataset_eletric_cars <span class="sc">%&gt;%</span></span>
+<span id="cb29-12"><a href=""></a>  <span class="fu">mutate</span>(</span>
+<span id="cb29-13"><a href=""></a>    <span class="at">media_bateria =</span> <span class="fu">mean</span>(Battery_capacity_KWh),</span>
+<span id="cb29-14"><a href=""></a>    <span class="at">desvio_bateria =</span> <span class="fu">sd</span>(Battery_capacity_KWh)</span>
+<span id="cb29-15"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h5 id="python---biblioteca-pandas-3">Python - Biblioteca Pandas</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb30-2"><a href=""></a></span>
+<span id="cb30-3"><a href=""></a><span class="co"># Criando novas colunas com assign</span></span>
+<span id="cb30-4"><a href=""></a>dados_transformados <span class="op">=</span> dataset_eletric_cars.assign(</span>
+<span id="cb30-5"><a href=""></a>    bateria_wh<span class="op">=</span><span class="kw">lambda</span> df: df[<span class="st">"Battery_capacity_kWh"</span>] <span class="op">*</span> <span class="dv">1000</span>,</span>
+<span id="cb30-6"><a href=""></a>    velocidade_ms<span class="op">=</span><span class="kw">lambda</span> df: df[<span class="st">"Top Speed kmh"</span>] <span class="op">/</span> <span class="fl">3.6</span></span>
+<span id="cb30-7"><a href=""></a>)</span>
+<span id="cb30-8"><a href=""></a></span>
+<span id="cb30-9"><a href=""></a><span class="co"># Aplicando várias transformações a uma única coluna</span></span>
+<span id="cb30-10"><a href=""></a>resumo_bateria <span class="op">=</span> dataset_eletric_cars.copy()</span>
+<span id="cb30-11"><a href=""></a>resumo_bateria[<span class="st">"media_bateria"</span>] <span class="op">=</span> dataset_eletric_cars[<span class="st">"Battery_capacity_kWh"</span>].mean()</span>
+<span id="cb30-12"><a href=""></a>resumo_bateria[<span class="st">"desvio_bateria"</span>] <span class="op">=</span> dataset_eletric_cars[<span class="st">"Battery_capacity_kWh"</span>].std()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3>
+Filtragem de Dados: <code>filter()</code>
+</h3>
+<p style="font-size:0.6em; color:#555;">
+A função filter seleciona elementos de uma coleção que satisfazem uma condição lógica definida pelo usuário.
+Ela é importante porque permite limpar, selecionar e preparar os dados de forma precisa, mantendo apenas as observações relevantes para a análise.
+</p>
+<h4 id="vetores---sintaxe-simples">Vetores - Sintaxe simples</h4>
+<h5 id="julia-5">Julia</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb31-1"><a href=""></a><span class="co"># filter(função_booleana, coleção)</span></span>
+<span id="cb31-2"><a href=""></a><span class="co"># Exemplos com vetores:</span></span>
+<span id="cb31-3"><a href=""></a>v <span class="op">=</span> [<span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">7</span>,<span class="fl">9</span>,<span class="fl">10</span>, <span class="cn">missing</span>];</span>
+<span id="cb31-4"><a href=""></a>v_filtrado <span class="op">=</span> <span class="fu">filter</span>(x <span class="op">-&gt;</span> !<span class="fu">ismissing</span>(x) <span class="op">&amp;&amp;</span> x <span class="op">&gt;</span> <span class="fl">5</span>, v)</span>
+<span id="cb31-5"><a href=""></a><span class="co">#Resultado:</span></span>
+<span id="cb31-6"><a href=""></a><span class="co"># v_filtrado = [7,9,10]</span></span>
+<span id="cb31-7"><a href=""></a></span>
+<span id="cb31-8"><a href=""></a>marcas <span class="op">=</span> [<span class="st">"Honda"</span>, <span class="st">"Mercedes-Benz"</span>, <span class="st">"Hyndai"</span>, <span class="st">"Jeep"</span>, <span class="st">"BMW"</span>, <span class="st">"Volkswagen"</span>, <span class="st">"Chevrolet"</span>];</span>
+<span id="cb31-9"><a href=""></a>longos <span class="op">=</span> <span class="fu">filter</span>(marcas <span class="op">-&gt;</span> <span class="fu">length</span>(marcas) <span class="op">&gt;</span> <span class="fl">5</span>, marcas)</span>
+<span id="cb31-10"><a href=""></a><span class="co"># Resultado: </span></span>
+<span id="cb31-11"><a href=""></a><span class="co"># longos = ["Mercedes-Benz", "Hyundai", "Volkswagen", "Chevrolet"]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h5 id="r-4">R</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a>v <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="cn">NA</span>)</span>
+<span id="cb32-2"><a href=""></a>v_filtrado <span class="ot">&lt;-</span> v[<span class="sc">!</span><span class="fu">is.na</span>(v) <span class="sc">&amp;</span> v <span class="sc">&gt;</span> <span class="dv">5</span>]</span>
+<span id="cb32-3"><a href=""></a></span>
+<span id="cb32-4"><a href=""></a>marcas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Honda"</span>, <span class="st">"Mercedes-Benz"</span>, <span class="st">"Hyndai"</span>, <span class="st">"Jeep"</span>, <span class="st">"BMW"</span>, <span class="st">"Volkswagen"</span>, <span class="st">"Chevrolet"</span>)</span>
+<span id="cb32-5"><a href=""></a>longos <span class="ot">&lt;-</span> marcas[<span class="fu">nchar</span>(marcas) <span class="sc">&gt;</span> <span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<h5 id="python-numpy">Python (Numpy)</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb33-2"><a href=""></a></span>
+<span id="cb33-3"><a href=""></a>v <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">10</span>, np.nan]</span>
+<span id="cb33-4"><a href=""></a>v_filtrado <span class="op">=</span> [x <span class="cf">for</span> x <span class="kw">in</span> v <span class="cf">if</span> <span class="kw">not</span> np.isnan(x) <span class="kw">and</span> x <span class="op">&gt;</span> <span class="dv">5</span>]</span>
+<span id="cb33-5"><a href=""></a></span>
+<span id="cb33-6"><a href=""></a>marcas <span class="op">=</span> [<span class="st">"Honda"</span>, <span class="st">"Mercedes-Benz"</span>, <span class="st">"Hyndai"</span>, <span class="st">"Jeep"</span>, <span class="st">"BMW"</span>, <span class="st">"Volkswagen"</span>, <span class="st">"Chevrolet"</span>]</span>
+<span id="cb33-7"><a href=""></a>longos <span class="op">=</span> [m <span class="cf">for</span> m <span class="kw">in</span> marcas <span class="cf">if</span> <span class="bu">len</span>(m) <span class="op">&gt;</span> <span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h4 id="exemplo-no-dataset-filtrando-suvs.">Exemplo no dataset: filtrando SUVs.</h4>
+<h5 id="julia-6">Julia</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb34-1"><a href=""></a>suv_cars <span class="op">=</span> <span class="fu">filter</span>(row <span class="op">-&gt;</span> row.car_body_type <span class="op">==</span> <span class="st">"SUV"</span>, dataset_eletric_cars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>6×22 DataFrame
+ Row │ brand     model                              top_speed_kmh  battery_cap ⋯
+     │ String15  String?                            Int64          Float64     ⋯
+─────┼──────────────────────────────────────────────────────────────────────────
+   1 │ Abarth    600e Scorpionissima                          200              ⋯
+   2 │ Abarth    600e Turismo                                 200
+   3 │ Aiways    U5                                           150
+   4 │ Aiways    U6                                           160
+   5 │ Alfa      Romeo Junior Elettrica 54 kWh                150              ⋯
+   6 │ Alfa      Romeo Junior Elettrica 54 kWh Ve…            200
+                                                              19 columns omitted</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<h5 id="r-5">R</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb36-2"><a href=""></a></span>
+<span id="cb36-3"><a href=""></a>suv_cars <span class="ot">&lt;-</span> dataset_eletric_cars <span class="sc">%&gt;%</span></span>
+<span id="cb36-4"><a href=""></a>  <span class="fu">filter</span>(car_body_type <span class="sc">==</span> <span class="st">"SUV"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<h5 id="python-3">Python</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href=""></a>suv_cars <span class="op">=</span> dataset_eletric_cars[dataset_eletric_cars[<span class="st">"car_body_type"</span>] <span class="op">==</span> <span class="st">"SUV"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h4 id="outros-filtros">Outros Filtros</h4>
+<p><br></p>
+<h6 id="filtrar-linhas-que-não-têm-missing-em-uma-coluna">Filtrar linhas que NÃO têm missing em uma coluna</h6>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb38-1"><a href=""></a>cars_limpo <span class="op">=</span> <span class="fu">dropmissing</span>(dataset_eletric_cars, <span class="op">:</span>number_of_cells)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<h6 id="filtrar-linhas-que-não-têm-missing-em-nenhuma-coluna">Filtrar linhas que NÃO têm missing em <strong>nenhuma</strong> coluna</h6>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb39-1"><a href=""></a>cars_sem_missing <span class="op">=</span> <span class="fu">dropmissing</span>(dataset_eletric_cars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<h6 id="substituir-valores-missing-por-algum-valor-imputação-simples">Substituir valores missing por algum valor (imputação simples)</h6>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb40-1"><a href=""></a>mean_cells <span class="op">=</span> <span class="fu">mean</span>(<span class="fu">skipmissing</span>(dataset_eletric_cars.number_of_cells))</span>
+<span id="cb40-2"><a href=""></a>dataset_eletric_cars.number_of_cells <span class="op">=</span> <span class="fu">coalesce</span>.(dataset_eletric_cars.number_of_cells, mean_cells)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h5 id="r-6">R</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb41-2"><a href=""></a></span>
+<span id="cb41-3"><a href=""></a><span class="co"># Filtrar linhas que NÃO têm missing em uma coluna</span></span>
+<span id="cb41-4"><a href=""></a>cars_limpo <span class="ot">&lt;-</span> dataset_eletric_cars <span class="sc">%&gt;%</span></span>
+<span id="cb41-5"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(number_of_cells))</span>
+<span id="cb41-6"><a href=""></a></span>
+<span id="cb41-7"><a href=""></a><span class="co"># Filtrar linhas que NÃO têm missing em nenhuma coluna</span></span>
+<span id="cb41-8"><a href=""></a>cars_sem_missing <span class="ot">&lt;-</span> dataset_eletric_cars <span class="sc">%&gt;%</span></span>
+<span id="cb41-9"><a href=""></a>  <span class="fu">filter</span>(<span class="fu">if_all</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="sc">!</span><span class="fu">is.na</span>(.x)))</span>
+<span id="cb41-10"><a href=""></a></span>
+<span id="cb41-11"><a href=""></a><span class="co"># Substituir valores missing por algum valor (imputação simples)</span></span>
+<span id="cb41-12"><a href=""></a>mean_cells <span class="ot">&lt;-</span> <span class="fu">mean</span>(dataset_eletric_cars<span class="sc">$</span>number_of_cells, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb41-13"><a href=""></a></span>
+<span id="cb41-14"><a href=""></a>dataset_eletric_cars <span class="ot">&lt;-</span> dataset_eletric_cars <span class="sc">%&gt;%</span></span>
+<span id="cb41-15"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">number_of_cells =</span> <span class="fu">if_else</span>(<span class="fu">is.na</span>(number_of_cells),</span>
+<span id="cb41-16"><a href=""></a>                                   mean_cells,</span>
+<span id="cb41-17"><a href=""></a>                                   number_of_cells))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h5 id="python-4">Python</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb42-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb42-3"><a href=""></a></span>
+<span id="cb42-4"><a href=""></a><span class="co"># Filtrar linhas que NÃO têm missing em uma coluna</span></span>
+<span id="cb42-5"><a href=""></a>cars_limpo <span class="op">=</span> dataset_eletric_cars.dropna(subset<span class="op">=</span>[<span class="st">"number_of_cells"</span>])</span>
+<span id="cb42-6"><a href=""></a></span>
+<span id="cb42-7"><a href=""></a><span class="co"># Filtrar linhas que NÃO têm missing em nenhuma coluna</span></span>
+<span id="cb42-8"><a href=""></a>cars_sem_missing <span class="op">=</span> dataset_eletric_cars.dropna()</span>
+<span id="cb42-9"><a href=""></a></span>
+<span id="cb42-10"><a href=""></a><span class="co"># Substituir valores missing por algum valor (imputação simples)</span></span>
+<span id="cb42-11"><a href=""></a>mean_cells <span class="op">=</span> dataset_eletric_cars[<span class="st">"number_of_cells"</span>].mean(skipna<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb42-12"><a href=""></a>dataset_eletric_cars[<span class="st">"number_of_cells"</span>] <span class="op">=</span> dataset_eletric_cars[<span class="st">"number_of_cells"</span>].fillna(mean_cells)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="detecção-e-tratamento-de-outliers---método-iqr-regra-do-boxplot">Detecção e tratamento de outliers - Método IQR (regra do boxplot)</h3>
+<p style="font-size:0.6em; color:#555;">
+Analisando a coluna number_of_cells (células individuais de lítio que compõem a bateria do carro elétrico).
+</p>
+<h5 id="julia-7">Julia</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb43-1"><a href=""></a><span class="im">using</span> <span class="bu">Statistics</span></span>
+<span id="cb43-2"><a href=""></a></span>
+<span id="cb43-3"><a href=""></a><span class="co"># Calcular limites IQR</span></span>
+<span id="cb43-4"><a href=""></a>cells_data <span class="op">=</span> <span class="fu">skipmissing</span>(dataset_eletric_cars.number_of_cells);</span>
+<span id="cb43-5"><a href=""></a>Q1, Q3 <span class="op">=</span> <span class="fu">quantile</span>(cells_data, [<span class="fl">0.25</span>, <span class="fl">0.75</span>]);</span>
+<span id="cb43-6"><a href=""></a>IQR_val <span class="op">=</span> Q3 <span class="op">-</span> Q1;</span>
+<span id="cb43-7"><a href=""></a></span>
+<span id="cb43-8"><a href=""></a>lower <span class="op">=</span> Q1 <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> IQR_val;</span>
+<span id="cb43-9"><a href=""></a>upper <span class="op">=</span> Q3 <span class="op">+</span> <span class="fl">1.5</span> <span class="op">*</span> IQR_val;</span>
+<span id="cb43-10"><a href=""></a></span>
+<span id="cb43-11"><a href=""></a><span class="co"># Filtrar outliers</span></span>
+<span id="cb43-12"><a href=""></a>outlier_rows <span class="op">=</span> <span class="fu">filter</span>(row <span class="op">-&gt;</span> </span>
+<span id="cb43-13"><a href=""></a>    !<span class="fu">ismissing</span>(row.number_of_cells) <span class="op">&amp;&amp;</span> </span>
+<span id="cb43-14"><a href=""></a>    (row.number_of_cells <span class="op">&lt;</span> lower <span class="op">||</span> row.number_of_cells <span class="op">&gt;</span> upper),</span>
+<span id="cb43-15"><a href=""></a>    dataset_eletric_cars</span>
+<span id="cb43-16"><a href=""></a>);</span>
+<span id="cb43-17"><a href=""></a></span>
+<span id="cb43-18"><a href=""></a><span class="fu">println</span>(<span class="st">"Q1: "</span> , Q1)</span>
+<span id="cb43-19"><a href=""></a><span class="fu">println</span>(<span class="st">"Q3: "</span> , Q3)</span>
+<span id="cb43-20"><a href=""></a><span class="fu">println</span>(<span class="st">"IQR: "</span>, IQR_val)</span>
+<span id="cb43-21"><a href=""></a></span>
+<span id="cb43-22"><a href=""></a><span class="co">#tabela final</span></span>
+<span id="cb43-23"><a href=""></a>outlier_rows[<span class="op">:</span>, [<span class="op">:</span>model, <span class="op">:</span>number_of_cells]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Q1: 150.0</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Q3: 324.0</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>IQR: 174.0</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>12×2 DataFrame
+ Row │ model                              number_of_cells
+     │ String?                            Int64?
+─────┼────────────────────────────────────────────────────
+   1 │ Air Grand Touring                             6600
+   2 │ Air Pure RWD                                  5400
+   3 │ Air Touring                                   5400
+   4 │ Model 3 Long Range AWD (Highland)             4416
+   5 │ Model 3 Long Range RWD (Highland)             4416
+   6 │ Model 3 Performance (Highland)                4416
+   7 │ Model S Dual Motor                            7920
+   8 │ Model S Plaid                                 7920
+   9 │ Model X Dual Motor                            7920
+  10 │ Model X Plaid                                 7920
+  11 │ Model Y Long Range AWD (Juniper)              4416
+  12 │ Model Y Long Range RWD (Juniper)              4416</code></pre>
+</div>
+</div>
+<p style="font-size:0.6em; color:#555;">
+Os outliers identificados representam os carros elétricos premium do mercado, com baterias excepcionalmente grandes, mostrando que a análise foi bem-sucedida em encontrar os valores realmente diferentes no conjunto de dados.
+</p>
+</section>
+<section class="slide level2">
+
+<h5 id="r-7">R</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb48-2"><a href=""></a></span>
+<span id="cb48-3"><a href=""></a><span class="co"># Calcular limites IQR</span></span>
+<span id="cb48-4"><a href=""></a>cells_data <span class="ot">&lt;-</span> dataset_eletric_cars<span class="sc">$</span>number_of_cells[<span class="sc">!</span><span class="fu">is.na</span>(dataset_eletric_cars<span class="sc">$</span>number_of_cells)]</span>
+<span id="cb48-5"><a href=""></a>Q1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(cells_data, <span class="fl">0.25</span>)</span>
+<span id="cb48-6"><a href=""></a>Q3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(cells_data, <span class="fl">0.75</span>)</span>
+<span id="cb48-7"><a href=""></a>IQR_val <span class="ot">&lt;-</span> Q3 <span class="sc">-</span> Q1</span>
+<span id="cb48-8"><a href=""></a></span>
+<span id="cb48-9"><a href=""></a>lower <span class="ot">&lt;-</span> Q1 <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> IQR_val</span>
+<span id="cb48-10"><a href=""></a>upper <span class="ot">&lt;-</span> Q3 <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> IQR_val</span>
+<span id="cb48-11"><a href=""></a></span>
+<span id="cb48-12"><a href=""></a><span class="co"># Filtrar outliers</span></span>
+<span id="cb48-13"><a href=""></a>outlier_rows <span class="ot">&lt;-</span> dataset_eletric_cars <span class="sc">%&gt;%</span></span>
+<span id="cb48-14"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(number_of_cells),</span>
+<span id="cb48-15"><a href=""></a>         number_of_cells <span class="sc">&lt;</span> lower <span class="sc">|</span> number_of_cells <span class="sc">&gt;</span> upper)</span>
+<span id="cb48-16"><a href=""></a></span>
+<span id="cb48-17"><a href=""></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Q1:"</span>, Q1))</span>
+<span id="cb48-18"><a href=""></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Q3:"</span>, Q3))</span>
+<span id="cb48-19"><a href=""></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"IQR:"</span>, IQR_val))</span>
+<span id="cb48-20"><a href=""></a></span>
+<span id="cb48-21"><a href=""></a><span class="co"># tabela final</span></span>
+<span id="cb48-22"><a href=""></a>outlier_rows <span class="sc">%&gt;%</span></span>
+<span id="cb48-23"><a href=""></a>  <span class="fu">select</span>(model, number_of_cells)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h5 id="python-5">Python</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb49-2"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb49-3"><a href=""></a></span>
+<span id="cb49-4"><a href=""></a><span class="co"># Calcular limites IQR</span></span>
+<span id="cb49-5"><a href=""></a>cells_data <span class="op">=</span> dataset_eletric_cars[<span class="st">"number_of_cells"</span>].dropna()</span>
+<span id="cb49-6"><a href=""></a>Q1 <span class="op">=</span> np.quantile(cells_data, <span class="fl">0.25</span>)</span>
+<span id="cb49-7"><a href=""></a>Q3 <span class="op">=</span> np.quantile(cells_data, <span class="fl">0.75</span>)</span>
+<span id="cb49-8"><a href=""></a>IQR_val <span class="op">=</span> Q3 <span class="op">-</span> Q1</span>
+<span id="cb49-9"><a href=""></a></span>
+<span id="cb49-10"><a href=""></a>lower <span class="op">=</span> Q1 <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> IQR_val</span>
+<span id="cb49-11"><a href=""></a>upper <span class="op">=</span> Q3 <span class="op">+</span> <span class="fl">1.5</span> <span class="op">*</span> IQR_val</span>
+<span id="cb49-12"><a href=""></a></span>
+<span id="cb49-13"><a href=""></a><span class="co"># Filtrar outliers</span></span>
+<span id="cb49-14"><a href=""></a>outlier_rows <span class="op">=</span> dataset_eletric_cars[</span>
+<span id="cb49-15"><a href=""></a>    (dataset_eletric_cars[<span class="st">"number_of_cells"</span>].notna()) <span class="op">&amp;</span></span>
+<span id="cb49-16"><a href=""></a>    ((dataset_eletric_cars[<span class="st">"number_of_cells"</span>] <span class="op">&lt;</span> lower) <span class="op">|</span></span>
+<span id="cb49-17"><a href=""></a>     (dataset_eletric_cars[<span class="st">"number_of_cells"</span>] <span class="op">&gt;</span> upper))</span>
+<span id="cb49-18"><a href=""></a>]</span>
+<span id="cb49-19"><a href=""></a></span>
+<span id="cb49-20"><a href=""></a><span class="bu">print</span>(<span class="st">"Q1:"</span>, Q1)</span>
+<span id="cb49-21"><a href=""></a><span class="bu">print</span>(<span class="st">"Q3:"</span>, Q3)</span>
+<span id="cb49-22"><a href=""></a><span class="bu">print</span>(<span class="st">"IQR:"</span>, IQR_val)</span>
+<span id="cb49-23"><a href=""></a></span>
+<span id="cb49-24"><a href=""></a><span class="co"># tabela final</span></span>
+<span id="cb49-25"><a href=""></a>outlier_rows[[<span class="st">"model"</span>, <span class="st">"number_of_cells"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="por-que-julia-se-destaca">Por que Julia se Destaca?</h3>
+<div style="position: relative; min-height: 400px;">
+<p><small> - Operações com DataFrames.jl são altamente otimizadas, oferecendo desempenho superior em grandes conjuntos de dados.<br>
+- A linguagem permite loops e transformações complexas com velocidade de código compilado sem bibliotecas externas.<br>
+- A sintaxe clara facilita a escrita de filtros, joins e agrupamentos de forma direta e legível.<br>
+- O suporte nativo a paralelização acelera tarefas intensivas de limpeza e processamento de dados.<br>
+- As funções vetorizadas e o broadcasting simplificam transformações colunares em tabelas de dados.<br>
+</small></p><small>
+</small></div><small>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
 </div>
 </div>
-</section>
-    </div>
-  </div>
+</small></section><small>
+    </small></div><small>
+  </small></div><small>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
   <script src="trabalho315_files/libs/revealjs/dist/reveal.js"></script>
@@ -1214,4 +1669,4 @@ A função <code>eltype.(eachcol(…))</code> mostra o tipo de cada coluna, indi
     </script>
     
 
-</body></html>
+</small></body></html>
