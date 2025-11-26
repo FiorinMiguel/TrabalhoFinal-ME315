@@ -1,0 +1,890 @@
+---
+title: ""
+author: ""
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    code-copy: true
+    title-slide: false
+    allow-html: true
+---
+
+<!-- Slide 1: Capa -->
+::: {.slide style="padding:0;"}
+
+<div style="
+  position: absolute;
+  inset: 0;
+  background-image: url('capa.png');
+  background-size: cover;
+  background-position: center;
+">
+</div>
+
+:::
+
+
+------------------------------------------------------------------------
+
+## **Foco Principal:** Manipulação prática de dados
+
+::: {style="position: relative; min-height: 400px;"}
+-   Tipos de dados e estruturas\
+-   Inspeção inicial e exploração\
+-   Estrutura do dataset\
+-   Criar DataFrame\
+-   Select, Rename, Transform\
+-   Filtragem\
+-   Tratamento de Outliers\
+:::
+
+------------------------------------------------------------------------
+
+```{=html}
+<h3><strong>Tipos de Dados e Estruturas</strong></h3>
+
+<img src="dataStructures.png" style="width:70%; margin-top:15px;"/>
+
+<p style="font-size:0.7em; color:#1C1C1C; line-height:1.4; margin-top:10px;">
+Entender como os dados são armazenados impacta diretamente a performance, o consumo de memória e a facilidade de manipulação. Escolher a estrutura correta é fundamental para um fluxo de trabalho eficiente em Julia.
+</p>
+
+```
+
+------------------------------------------------------------------------
+
+```{=html}
+<h4><strong>Arrays</strong></h4>
+<p style="font-size:0.7em; color:#555;">
+Os arrays são a base de praticamente tudo na linguagem Julia: eles armazenam dados de forma contínua na memória, o que dá muita eficiência. Essa estrutura pode representar tanto <strong>vetores</strong> quanto <strong>matrizes</strong>
+</p>
+
+<h5><strong>Julia</strong></h5>
+```
+
+```{julia}
+#| echo: true
+#| eval: false
+# Criando Arrays
+vetor = [1,2,3,4]
+matriz = [1 2 3; 4 5 6]
+
+# Verificando os tipos de dados
+typeof(vetor) # Vector{Int64}
+typeof(matriz) # Matrix{Int64}
+
+# Acessando elementos
+vetor[1] # 1
+matriz[2,3] # 6
+```
+
+------------------------------------------------------------------------
+
+##### **R**
+
+```{r}
+#| echo: true
+#| eval: false
+vetor <- c(1:4)
+matriz <- matrix(1:6, nrow = 2)
+
+typeof(vetor)
+typeof(matriz)
+
+vetor[1]
+matriz[2,3]
+```
+
+##### Python
+
+```{python}
+#| echo: true
+#| eval: false
+import numpy as np
+
+vetor = np.array([1, 2, 3, 4])
+matriz = np.array([[1, 2, 3],
+                   [4, 5, 6]])
+
+print(type(vetor)) 
+print(type(matriz)) 
+print(vetor[0])
+print(matriz[2,3])
+```
+
+------------------------------------------------------------------------
+
+### Valores Ausentes: O missing do Julia
+
+```{julia}
+#| echo: true
+#| eval: false
+x = [15, 22, missing, 3]
+mean(x)                # erro
+mean(skipmissing(x))   # 13.33
+```
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+Julia não ignora valores ausentes: se houver missing, funções geram erro, forçando você a tratar os dados. Isso evita resultados incorretos e garante análises mais seguras.
+</p>
+```
+
+##### **R**
+
+```{r}
+#| echo: true
+#| eval: false
+x <- c(15, 22, NA, 3)
+mean(x)          # Retorna NA
+mean(x, na.rm=TRUE)  # Ignora os NAs, retorna 13.33
+```
+
+##### **Python**
+
+```{python}
+#| echo: true
+#| eval: false
+import numpy as np
+x = np.array([15, 22, np.nan, 3])
+np.mean(x)              # Retorna nan
+np.nanmean(x)           # Ignora os NaNs, retorna 13.33
+```
+
+------------------------------------------------------------------------
+
+### Trabalhando com Dados Tabulares: DataFrames
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+Na prática, quase sempre lidamos com dados tabulares. Em Julia, o DataFrame organiza colunas como vetores alinhados e facilita manipulação e análise de dados.
+</p>
+
+<div style="display: flex; justify-content: flex-start; align-items: center; gap: 20px;">
+  <img src="DF-exemplo.png"
+       style="width: 35%; height: auto;"/>
+  <img src="Dataframe.png"
+       style="width: 60%; height: auto;"/>
+</div>
+
+<p style="font-size:0.6em; color:#555;">
+Cada coluna de um DataFrame é um vetor com elementos do mesmo tipo, e todas as colunas têm o mesmo número de elementos. Isso transforma o DataFrame em uma tabela de vetores alinhados, permitindo acessar colunas, linhas ou células com facilidade.
+</p>
+```
+
+------------------------------------------------------------------------
+
+##### Julia
+
+```{julia}
+#| echo: true
+#| eval: false
+# Importa o pacote de manipulacao de tabelas
+using DataFrames 
+
+DadosAlunos = DataFrame(Nome=["Ana", "João", "Carlos"], # Vetor de strings
+               Idade=[23, 31, 20], # Vetor de inteiros
+               Nota=[8.5, 7.0, 9.2]) # Vetor de floats
+```
+
+##### Base do R
+
+```{r}
+#| echo: true
+#| eval: false
+DadosAlunos <- data.frame(
+  Nome = c("Ana", "João", "Carlos"), 
+  Idade = c(23, 31, 20),   
+  Nota = c(8.5, 7.0, 9.2)
+)
+
+```
+
+##### Python - Biblioteca Pandas
+
+```{python}
+#| echo: true
+#| eval: false
+import pandas as pd  # Pacote para trabalhar com dados tabulares
+
+DadosAlunos = pd.DataFrame({
+    "Nome": ["Ana", "João", "Carlos"],
+    "Idade": [23, 31, 20],        
+    "Nota": [8.5, 7.0, 9.2]    
+})
+```
+
+------------------------------------------------------------------------
+
+### Inspeção inicial e exploração
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+A inspeção inicial é essencial para compreender a estrutura e a qualidade dos dados, permitindo identificar inconsistências, valores ausentes e possíveis outliers. Para exemplificar esses conceitos, utilizaremos o dataset <em>Electric Vehicles Spec 2025</em>, obtido no Kaggle.
+</p>
+
+```
+#### Visualização das primeiras linhas
+
+##### Julia
+```{julia}
+#| include: false
+using CSV, DataFrames
+dataset_eletric_cars = CSV.read("electric_vehicles_spec_2025.csv", DataFrame)
+```
+
+```{julia}
+#| echo: true
+#| eval: false
+first(dataset_eletric_cars, 6)
+```
+
+```{julia}
+#| echo: false
+first(dataset_eletric_cars, 6)
+```
+
+------------
+
+##### R
+```{r}
+#| echo: true
+#| eval: false
+head(dataset_eletric_cars) # primeiras 6 linhas
+```
+
+##### Python
+
+```{python}
+#| echo: true
+#| eval: false
+import pandas as pd
+print(dataset_eletric_cars.head())
+```
+
+------------------------------------------------------------------------
+
+### Estrutura do DataSet
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+Analisar a estrutura do dataset é essencial para compreender o tipo e o papel de cada variável, facilitando a escolha das operações adequadas. Essa etapa também ajuda a identificar inconsistências ou tipos incorretos de dados que podem afetar as análises posteriores.
+</p>
+```
+<h5><code>describe(...)</code></h5>
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+A função <code>describe(...)</code> mostra um resumo das colunas, com estatísticas para numéricas e frequências para categóricas, ajudando a identificar missing values e padrões.
+</p>
+```
+
+```{julia}
+#| echo: true
+#| eval: false
+describe(dataset_eletric_cars)
+```
+
+---------------------
+
+```{julia}
+#| echo: false
+describe(dataset_eletric_cars)
+```
+
+------------------------------------------------------------------------
+
+<h5><code>names(...)</code></h5>
+
+```{julia}
+#| echo: true
+#| eval: false
+names(dataset_eletric_cars)
+```
+
+```{julia}
+#| echo: false
+names(dataset_eletric_cars)
+```
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+A função <code>names(...)</code> retorna os nomes de todas as colunas do dataset, permitindo entender rapidamente a estrutura dos dados.
+</p>
+```
+
+------------------------------------------------------------------------
+
+<h5><code>eltype.(eachcol(...))</code></h5>
+
+```{julia}
+#| echo: true
+#| eval: false
+eltype.(eachcol(dataset_eletric_cars))
+```
+
+```{julia}
+#| echo: false
+eltype.(eachcol(dataset_eletric_cars))
+```
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+A função <code>eltype.(eachcol(...))</code> mostra o tipo de cada coluna, indicando se são numéricas, categóricas ou outro tipo de dado.
+</p>
+```
+
+------------------------------------------------------------------------
+
+##### R
+
+```{r}
+#| echo: true
+#| eval: false
+summary(dataset_eletric_cars) #estatísticas descritivas das colunas
+str(dataset_eletric_cars) # estrutura interna do dataset.
+names(dataset_eletric_cars) # nomes
+```
+
+##### Python - Pandas
+
+```{python}
+#| echo: true
+#| eval: false
+import pandas as pd
+dataset_eletric_cars.info() # Mostra estrutura, tipos, contagem de não-nulos...
+print(dataset_eletric_cars.columns.tolist()) # nomes das colunas
+print(dataset_eletric_cars.dtypes) # tipos de colunas
+print(dataset_eletric_cars.describe()) # estatísticas descritivas
+```
+
+------------------------------------------------------------------------
+
+<h3><code>Rename</code></h3>
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+Seguir boas práticas ao nomear variáveis melhora a clareza e reduz erros no código. Adotar um padrão como o <em>snake_case</em> — sem espaços, acentos ou caracteres especiais, usando minúsculas e “_” — garante consistência e compatibilidade entre linguagens, tornando o trabalho mais organizado.
+</p>
+```
+
+##### Julia:
+
+```{julia}
+#| echo: true
+#| eval: false
+# Exemplo simples: 
+rename!(dataset_eletric_cars, "Brand" => "brand")
+rename!(dataset_eletric_cars, "Model" => "model")
+rename!(dataset_eletric_cars, "Top Speed kmh" => "top_speed_kmh")
+```
+
+------------
+
+##### R - Pacote dplyr
+
+```{r}
+#| echo: true
+#| eval: false
+library(dplyr)
+dataset_eletric_cars <- dataset_eletric_cars %>%
+  rename(
+    brand = Brand,
+    model = Model,
+    top_speed_kmh = Top.Speed.kmh,
+    battery_capacity_kwh = Battery.capacity.kWh
+  )
+
+```
+
+##### Python - Biblioteca Pandas
+
+```{python}
+#| echo: true
+#| eval: false
+dataset_eletric_cars = dataset_eletric_cars.rename(columns={
+    "Brand": "brand",
+    "Model": "model",
+    "Top.Speed.kmh": "top_speed_kmh",
+    "Battery.capacity.kWh": "battery_capacity_kwh"
+})
+
+```
+
+----------
+
+<h3><code>Select</code></h3>
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+A seleção de colunas é fundamental para tornar o código mais claro, eficiente e menos sujeito a erros, permitindo trabalhar apenas com as variáveis necessárias. Mantê-la explícita melhora a transparência e facilita a compreensão do código no futuro.
+</p>
+```
+
+##### Julia:
+
+```{julia}
+#| echo: true
+#| eval: false
+using DataFrames
+
+# Selecionando algumas colunas específicas
+info_basica = select(dataset_eletric_cars, [:Brand, :Model, :Battery_capacity_kWh])
+
+# Seleção de um intervalo de colunas (da primeira até a última do intervalo escolhido)
+seleciona_intervalo = select(dataset_eletric_cars, Between(:Brand, :Top_Speed_kmh))
+
+# Seleção pela posição das colunas (aqui pegamos as três primeiras)
+tres_primeiras_colunas = select(dataset_eletric_cars, 1:3)
+
+# Removendo colunas que não queremos manter
+sem_marca_modelo = select(dataset_eletric_cars, Not(["Model", "Brand"]))
+```
+
+------------
+
+##### Pacote dplyr
+
+```{r}
+#| echo: true
+#| eval: false
+library(dplyr)
+
+# Seleção simples de algumas colunas
+info_basica <- dataset_eletric_cars %>%
+  select(Brand, Model, Battery_capacity_kWh)
+
+# Seleção de intervalo de colunas (da primeira até a última do intervalo escolhido)
+seleciona_intervalo <- dataset_eletric_cars %>%
+  select(Brand:Top.Speed.kmh)
+
+# Seleção por padrão no nome da coluna (aqui pegamos todas que começam com "Bat")
+colunas_bateria <- dataset_eletric_cars %>%
+  select(starts_with("Bat"))
+
+# Removendo colunas que não queremos manter
+sem_marca_modelo <- dataset_eletric_cars %>%
+  select(-Model, -Brand)
+```
+
+-------------
+
+##### Python - Biblioteca Pandas
+
+```{python}
+#| echo: true
+#| eval: false
+import pandas as pd
+
+# Seleção simples de algumas colunas
+info_basica = dataset_eletric_cars[["Brand", "Model", "Battery_capacity_kWh"]]
+
+# Seleção de um intervalo pelo índice (aqui pegamos as três primeiras colunas)
+seleciona_intervalo = dataset_eletric_cars.iloc[:, 0:3]
+
+# Seleção por padrão no nome da coluna (todas que começam com "Bat")
+colunas_bateria = dataset_eletric_cars.filter(regex="^Bat")
+
+# Removendo colunas que não queremos manter
+sem_marca_modelo = dataset_eletric_cars.drop(columns=["Model", "Brand"])
+
+```
+
+------------------
+
+<h3><code>Transform</code></h3>
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+A função de transformação é fundamental para criar novas variáveis ou modificar valores existentes por meio de cálculos e padronizações, permitindo adicionar ou ajustar colunas de forma sistemática. Seu uso explícito torna o código mais claro e bem documentado, o que é essencial para análises reprodutíveis e projetos com várias etapas.
+</p>
+
+```
+
+##### Julia:
+
+```{julia}
+#| echo: true
+#| eval: false
+using DataFrames
+
+# Criando novas colunas com transform
+dados_transformados = transform(
+    dataset_eletric_cars,
+    :Battery_capacity_kWh => (x -> x .* 1000) => :bateria_wh,
+    :Top_Speed_kmh => (x -> x ./ 3.6) => :velocidade_ms
+)
+
+# Aplicando múltiplas funções a uma mesma coluna
+resumo_bateria = transform(
+    dataset_eletric_cars,
+    :Battery_capacity_kWh => [mean, std]
+)
+
+```
+
+---------------------
+
+
+##### R - Pacote dplyr
+
+```{r}
+#| echo: true
+#| eval: false
+library(dplyr)
+
+# Criando novas colunas com mutate
+dados_transformados <- dataset_eletric_cars %>%
+  mutate(
+    bateria_wh    = Battery_capacity_kWh * 1000,
+    velocidade_ms = Top.Speed.kmh / 3.6
+  )
+
+# Aplicando várias transformações à mesma coluna
+resumo_bateria <- dataset_eletric_cars %>%
+  mutate(
+    media_bateria = mean(Battery_capacity_KWh),
+    desvio_bateria = sd(Battery_capacity_KWh)
+  )
+```
+
+----------------------------
+
+##### Python - Biblioteca Pandas
+
+```{python}
+#| echo: true
+#| eval: false
+import pandas as pd
+
+# Criando novas colunas com assign
+dados_transformados = dataset_eletric_cars.assign(
+    bateria_wh=lambda df: df["Battery_capacity_kWh"] * 1000,
+    velocidade_ms=lambda df: df["Top Speed kmh"] / 3.6
+)
+
+# Aplicando várias transformações a uma única coluna
+resumo_bateria = dataset_eletric_cars.copy()
+resumo_bateria["media_bateria"] = dataset_eletric_cars["Battery_capacity_kWh"].mean()
+resumo_bateria["desvio_bateria"] = dataset_eletric_cars["Battery_capacity_kWh"].std()
+```
+
+------------------------------------
+
+<h3>Filtragem de Dados: <code>filter()</code></h3>
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+A função filter seleciona elementos de uma coleção que satisfazem uma condição lógica definida pelo usuário.
+Ela é importante porque permite limpar, selecionar e preparar os dados de forma precisa, mantendo apenas as observações relevantes para a análise.
+</p>
+```
+#### Vetores - Sintaxe simples
+##### Julia
+```{julia}
+#| echo: true
+#| eval: false
+# filter(função_booleana, coleção)
+# Exemplos com vetores:
+v = [1,3,4,5,7,9,10, missing];
+v_filtrado = filter(x -> !ismissing(x) && x > 5, v)
+#Resultado:
+# v_filtrado = [7,9,10]
+
+marcas = ["Honda", "Mercedes-Benz", "Hyndai", "Jeep", "BMW", "Volkswagen", "Chevrolet"];
+longos = filter(marcas -> length(marcas) > 5, marcas)
+# Resultado: 
+# longos = ["Mercedes-Benz", "Hyundai", "Volkswagen", "Chevrolet"]
+```
+----------------
+
+##### R
+```{r}
+#| echo: true
+#| eval: false
+v <- c(1, 3, 4, 5, 7, 9, 10, NA)
+v_filtrado <- v[!is.na(v) & v > 5]
+
+marcas <- c("Honda", "Mercedes-Benz", "Hyndai", "Jeep", "BMW", "Volkswagen", "Chevrolet")
+longos <- marcas[nchar(marcas) > 5]
+```
+##### Python (Numpy)
+```{python}
+#| echo: true
+#| eval: false
+import numpy as np
+
+v = [1, 3, 4, 5, 7, 9, 10, np.nan]
+v_filtrado = [x for x in v if not np.isnan(x) and x > 5]
+
+marcas = ["Honda", "Mercedes-Benz", "Hyndai", "Jeep", "BMW", "Volkswagen", "Chevrolet"]
+longos = [m for m in marcas if len(m) > 5]
+```
+
+---- 
+
+#### Exemplo no dataset: filtrando SUVs.
+##### Julia
+
+```{julia}
+#| echo: true
+#| eval: false
+suv_cars = filter(row -> row.car_body_type == "SUV", dataset_eletric_cars)
+```
+
+```{julia}
+#| echo: false
+suv_cars = filter(row -> row.car_body_type == "SUV", dataset_eletric_cars);
+first(suv_cars, 6)
+```
+
+------
+
+##### R
+```{r}
+#| echo: true
+#| eval: false
+library(dplyr)
+
+suv_cars <- dataset_eletric_cars %>%
+  filter(car_body_type == "SUV")
+```
+
+##### Python
+```{python}
+#| echo: true
+#| eval: false
+suv_cars = dataset_eletric_cars[dataset_eletric_cars["car_body_type"] == "SUV"]
+```
+
+----------
+
+#### Outros Filtros
+<br>
+
+###### Filtrar linhas que NÃO têm missing em uma coluna
+
+```{julia}
+#| echo: true
+#| eval: false
+cars_limpo = dropmissing(dataset_eletric_cars, :number_of_cells)
+```
+<br>
+
+###### Filtrar linhas que NÃO têm missing em **nenhuma** coluna
+
+```{julia}
+#| echo: true
+#| eval: false
+cars_sem_missing = dropmissing(dataset_eletric_cars)
+```
+<br>
+
+###### Substituir valores missing por algum valor (imputação simples)
+```{julia}
+#| echo: true
+#| eval: false
+mean_cells = mean(skipmissing(dataset_eletric_cars.number_of_cells))
+dataset_eletric_cars.number_of_cells = coalesce.(dataset_eletric_cars.number_of_cells, mean_cells)
+```
+
+------
+
+##### R
+```{r}
+#| echo: true
+#| eval: false
+library(dplyr)
+
+# Filtrar linhas que NÃO têm missing em uma coluna
+cars_limpo <- dataset_eletric_cars %>%
+  filter(!is.na(number_of_cells))
+
+# Filtrar linhas que NÃO têm missing em nenhuma coluna
+cars_sem_missing <- dataset_eletric_cars %>%
+  filter(if_all(everything(), ~ !is.na(.x)))
+
+# Substituir valores missing por algum valor (imputação simples)
+mean_cells <- mean(dataset_eletric_cars$number_of_cells, na.rm = TRUE)
+
+dataset_eletric_cars <- dataset_eletric_cars %>%
+  mutate(number_of_cells = if_else(is.na(number_of_cells),
+                                   mean_cells,
+                                   number_of_cells))
+
+```
+
+------
+
+##### Python
+```{python}
+#| echo: true
+#| eval: false
+import pandas as pd
+import numpy as np
+
+# Filtrar linhas que NÃO têm missing em uma coluna
+cars_limpo = dataset_eletric_cars.dropna(subset=["number_of_cells"])
+
+# Filtrar linhas que NÃO têm missing em nenhuma coluna
+cars_sem_missing = dataset_eletric_cars.dropna()
+
+# Substituir valores missing por algum valor (imputação simples)
+mean_cells = dataset_eletric_cars["number_of_cells"].mean(skipna=True)
+dataset_eletric_cars["number_of_cells"] = dataset_eletric_cars["number_of_cells"].fillna(mean_cells)
+
+```
+
+------
+
+### Detecção e tratamento de outliers - Método IQR (regra do boxplot)
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+Analisando a coluna number_of_cells (células individuais de lítio que compõem a bateria do carro elétrico).
+</p>
+```
+##### Julia
+
+```{julia}
+#| echo: true
+#| eval: false
+using Statistics
+
+# Calcular limites IQR
+cells_data = skipmissing(dataset_eletric_cars.number_of_cells);
+Q1, Q3 = quantile(cells_data, [0.25, 0.75]);
+IQR_val = Q3 - Q1;
+
+lower = Q1 - 1.5 * IQR_val;
+upper = Q3 + 1.5 * IQR_val;
+
+# Filtrar outliers
+outlier_rows = filter(row -> 
+    !ismissing(row.number_of_cells) && 
+    (row.number_of_cells < lower || row.number_of_cells > upper),
+    dataset_eletric_cars
+);
+
+println("Q1: " , Q1)
+println("Q3: " , Q3)
+println("IQR: ", IQR_val)
+
+#tabela final
+outlier_rows[:, [:model, :number_of_cells]]
+```
+
+------------------------------------------------------------------------
+
+```{julia}
+#| echo: false
+using Statistics
+
+# Calcular limites IQR
+cells_data = skipmissing(dataset_eletric_cars.number_of_cells);
+Q1, Q3 = quantile(cells_data, [0.25, 0.75]);
+IQR_val = Q3 - Q1;
+
+lower = Q1 - 1.5 * IQR_val;
+upper = Q3 + 1.5 * IQR_val;
+
+# Filtrar outliers
+outlier_rows = filter(row -> 
+    !ismissing(row.number_of_cells) && 
+    (row.number_of_cells < lower || row.number_of_cells > upper),
+    dataset_eletric_cars
+);
+println("Q1: " , Q1)
+println("Q3: " , Q3)
+println("IQR: ", IQR_val)
+
+#tabela final
+outlier_rows[:, [:model, :number_of_cells]]
+```
+
+```{=html}
+<p style="font-size:0.6em; color:#555;">
+Os outliers identificados representam os carros elétricos premium do mercado, com baterias excepcionalmente grandes, mostrando que a análise foi bem-sucedida em encontrar os valores realmente diferentes no conjunto de dados.
+</p>
+```
+
+--------------
+
+##### R
+
+```{r}
+#| echo: true
+#| eval: false
+library(dplyr)
+
+# Calcular limites IQR
+cells_data <- dataset_eletric_cars$number_of_cells[!is.na(dataset_eletric_cars$number_of_cells)]
+Q1 <- quantile(cells_data, 0.25)
+Q3 <- quantile(cells_data, 0.75)
+IQR_val <- Q3 - Q1
+
+lower <- Q1 - 1.5 * IQR_val
+upper <- Q3 + 1.5 * IQR_val
+
+# Filtrar outliers
+outlier_rows <- dataset_eletric_cars %>%
+  filter(!is.na(number_of_cells),
+         number_of_cells < lower | number_of_cells > upper)
+
+print(paste("Q1:", Q1))
+print(paste("Q3:", Q3))
+print(paste("IQR:", IQR_val))
+
+# tabela final
+outlier_rows %>%
+  select(model, number_of_cells)
+```
+
+------
+
+##### Python
+
+```{python}
+#| echo: true
+#| eval: false
+import numpy as np
+import pandas as pd
+
+# Calcular limites IQR
+cells_data = dataset_eletric_cars["number_of_cells"].dropna()
+Q1 = np.quantile(cells_data, 0.25)
+Q3 = np.quantile(cells_data, 0.75)
+IQR_val = Q3 - Q1
+
+lower = Q1 - 1.5 * IQR_val
+upper = Q3 + 1.5 * IQR_val
+
+# Filtrar outliers
+outlier_rows = dataset_eletric_cars[
+    (dataset_eletric_cars["number_of_cells"].notna()) &
+    ((dataset_eletric_cars["number_of_cells"] < lower) |
+     (dataset_eletric_cars["number_of_cells"] > upper))
+]
+
+print("Q1:", Q1)
+print("Q3:", Q3)
+print("IQR:", IQR_val)
+
+# tabela final
+outlier_rows[["model", "number_of_cells"]]
+```
+
+---------------
+
+### Por que Julia se Destaca?
+
+::: {style="position: relative; min-height: 400px;"}
+<small>
+-   Operações com DataFrames.jl são altamente otimizadas, oferecendo desempenho superior em grandes conjuntos de dados.\
+-   A linguagem permite loops e transformações complexas com velocidade de código compilado sem bibliotecas externas.\
+-   A sintaxe clara facilita a escrita de filtros, joins e agrupamentos de forma direta e legível.\
+-   O suporte nativo a paralelização acelera tarefas intensivas de limpeza e processamento de dados.\
+-   As funções vetorizadas e o broadcasting simplificam transformações colunares em tabelas de dados.\
+:::
+
+
+
