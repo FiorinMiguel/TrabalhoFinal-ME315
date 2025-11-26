@@ -1,4 +1,4 @@
-Brand,Model,Top Speed kmh,Battery capacity kWh,Battery Type,Number of Cells,Torque nm,Efficiency wh_per km,Range km,Acceleration_0_100_s,Fast Charging Power_kw_dc,Fast Charge_port,Towing Capacity kg,Cargo Volume_l,Seats,Drivetrain,Segment,Length mm,Width mm,Height mm,Car Body type,Source_url
+brand,model,top_speed_kmh,battery_capacity_kwh,battery_type,number_of_cells,torque_nm,efficiency_wh_per_km,range_km,acceleration_0_100_s,fast_charging_power_kw_dc,fast_charge_port,towing_capacity_kg,cargo_volume_l,seats,drivetrain,segment,length_mm,width_mm,height_mm,car_body_type,source_url
 Abarth,500e Convertible,155,37.8,Lithium-ion,192,235,156,225,7.0,67,CCS,0,185,4,FWD,B - Compact,3673,1683,1518,Hatchback,https://ev-database.org/car/1904/Abarth-500e-Convertible
 Abarth,500e Hatchback,155,37.8,Lithium-ion,192,235,149,225,7.0,67,CCS,0,185,4,FWD,B - Compact,3673,1683,1518,Hatchback,https://ev-database.org/car/1903/Abarth-500e-Hatchback
 Abarth,600e Scorpionissima,200,50.8,Lithium-ion,102,345,158,280,5.9,79,CCS,0,360,5,FWD,JB - Compact,4187,1779,1557,SUV,https://ev-database.org/car/3057/Abarth-600e-Scorpionissima
